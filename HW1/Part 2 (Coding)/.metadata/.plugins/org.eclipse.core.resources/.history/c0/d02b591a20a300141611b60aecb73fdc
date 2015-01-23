@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,62 +13,38 @@ public class Movement {
 	public static Piece possiblePieceMoves(int[][] state, int pieceNum) {
 		// return all possible moves for a piece given a game state
 				
-		// initialize possible moves array
-		ArrayList<Character> possibleMovesArray = new ArrayList<Character>();
+		// initialize possible moves matrix
+		Set<Character> possibleMoves = new HashSet<Character>();
 		
 		// locate piece in game state
 		ArrayList<int[]> pieceLocations = currentPieceLocations(state, pieceNum);
-//		System.out.println("Current piece = " + pieceNum);
-//		System.out.println("Current piece: ");
-//		for (int[] location : pieceLocations) {
-//			System.out.println(location[1] + "," + location[0]);
-//		}
+		System.out.println("Current piece = " + pieceNum);
+		System.out.println("Current piece: ");
+		for (int[] location : pieceLocations) {
+			System.out.println(location[1] + "," + location[0]);
+		}
 		
 		// look for all zeros (empty) in game state
 		ArrayList<int[]> zeroLocations = currentPieceLocations(state, 0);
-		possibleMovesArray.addAll(compareMoves(pieceLocations, zeroLocations));
-//		System.out.println("Zeros: ");
-//		for (int[] location : zeroLocations) {
-//			System.out.println(location[1] + "," + location[0]);
-//		}
+		possibleMoves.addAll(compareMoves(pieceLocations, zeroLocations));
+		System.out.println("Zeros: ");
+		for (int[] location : zeroLocations) {
+			System.out.println(location[1] + "," + location[0]);
+		}
 		
 		// if piece = master (2), look for -1 values as well
 		if (pieceNum == 2) {
 			ArrayList<int[]> negOneLocations = currentPieceLocations(state, -1);
-			possibleMovesArray.addAll(compareMoves(pieceLocations, negOneLocations));
-//			System.out.println("negOnes: ");
-//			for (int[] location : negOneLocations) {
-//				System.out.println(location[1] + "," + location[0]);
-//			}
+			possibleMoves.addAll(compareMoves(pieceLocations, negOneLocations));
+			System.out.println("negOnes: ");
+			for (int[] location : negOneLocations) {
+				System.out.println(location[1] + "," + location[0]);
+			}
 		}
 		
-		// Only add move to possible result set if all cells of piece can freely move up or down
-		// Set will prevent duplicates from being added
-		Set<Character> possibleMovesSet = new HashSet<Character>();
+		System.out.println("Possible: " + pieceNum + "," + possibleMoves);
 		
-		for (Character currentMove : possibleMovesArray) {
-			if (pieceLocations.size() > 1 && ((currentMove == 'u') || currentMove == 'd')) {
-				// If more than one cell, we need to check
-				int numInstances = 0;
-				for (int i = 0; i < possibleMovesArray.size(); i++) {
-					// Find all instances of the same character
-					if (possibleMovesArray.get(i) == currentMove) {
-						numInstances++;
-					}
-					// Only add to output set if number of instances = size of piece
-					if (numInstances == pieceLocations.size()) {
-						possibleMovesSet.add(currentMove);
-					}
-				}
-			} else {
-				// Otherwise, we need to just add the value to the output set
-				possibleMovesSet.add(currentMove);
-			}
-		}	
-		
-		System.out.println("Possible: " + pieceNum + "," + possibleMovesSet);
-		
-		return new Piece(pieceNum, possibleMovesSet);
+		return new Piece(pieceNum, possibleMoves);
 	}
 	
 	public static ArrayList<Move> allPossibleMoves(int[][] state) {
@@ -100,6 +75,10 @@ public class Movement {
 			for (char currentMoveId : possibleMoves) {
 				individualMoves.add(new Move(currentPiece.getPieceNum(), currentMoveId));
 			}
+		}
+		
+		for (Move thisMove : individualMoves) {
+			System.out.println("Possible" + thisMove.getPieceNum() + "," + thisMove.getMove());
 		}
 		
 		return individualMoves;

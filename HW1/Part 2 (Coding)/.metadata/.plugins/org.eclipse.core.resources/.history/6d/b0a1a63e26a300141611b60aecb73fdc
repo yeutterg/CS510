@@ -102,6 +102,10 @@ public class Movement {
 			}
 		}
 		
+//		for (Move thisMove : individualMoves) {
+//			System.out.println("Possible" + thisMove.getPieceNum() + "," + thisMove.getMove());
+//		}
+		
 		return individualMoves;
 	}
 	

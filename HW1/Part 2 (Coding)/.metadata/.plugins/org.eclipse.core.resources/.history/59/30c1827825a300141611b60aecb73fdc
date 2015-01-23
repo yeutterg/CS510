@@ -43,12 +43,12 @@ public class Movement {
 //			}
 		}
 		
-		// Only add move to possible result set if all cells of piece can freely move up or down
+		// Only add move to possible result set if all cells of piece can freely move
 		// Set will prevent duplicates from being added
 		Set<Character> possibleMovesSet = new HashSet<Character>();
 		
 		for (Character currentMove : possibleMovesArray) {
-			if (pieceLocations.size() > 1 && ((currentMove == 'u') || currentMove == 'd')) {
+			if (pieceLocations.size() > 1) {
 				// If more than one cell, we need to check
 				int numInstances = 0;
 				for (int i = 0; i < possibleMovesArray.size(); i++) {
@@ -62,7 +62,7 @@ public class Movement {
 					}
 				}
 			} else {
-				// Otherwise, we need to just add the value to the output set
+				// Otherwise, we need to just return the set with all array values
 				possibleMovesSet.add(currentMove);
 			}
 		}	
@@ -101,6 +101,10 @@ public class Movement {
 				individualMoves.add(new Move(currentPiece.getPieceNum(), currentMoveId));
 			}
 		}
+		
+//		for (Move thisMove : individualMoves) {
+//			System.out.println("Possible" + thisMove.getPieceNum() + "," + thisMove.getMove());
+//		}
 		
 		return individualMoves;
 	}
