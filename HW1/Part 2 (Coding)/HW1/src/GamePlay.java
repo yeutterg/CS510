@@ -7,7 +7,7 @@ public class GamePlay {
 		States.loadGameState("D:/Academic/Winter 2015/CS 510 Artificial Intelligence/Homework/HW1/HW1/SBP-level0.txt");
 		
 		// Execute random walks (2.F)
-		randomWalks(States.gameState, 3);
+		randomWalks(States.gameState, 20);
 	}
 	
 	// Part 2.F: Random Walks
@@ -28,29 +28,29 @@ public class GamePlay {
 		
 		for (int i = 0; i < N; i++) {
 			// Generate all possible moves in board
-			Piece[] allPossibleMoves = Movement.allPossibleMoves(state);
+			ArrayList<Move> allPossibleMoves = Movement.allPossiblePieceMoves(state);
 			
 			// Select a possible move at random, and print it
-//			Move selectedMove = allPossibleMoves.get(new Random().nextInt(allPossibleMoves.size()));
-//			System.out.println("\n(" + selectedMove.getPieceNum() + "," + selectedMove.getMove() + ")\n");
-//			
-//			// Execute it
-//			Movement.applyMove(state, selectedMove.getPieceNum(), selectedMove.getMove());
-//			
-//			// Normalize the game state
-//			States.gameState = States.normalizeState(States.gameState);
-//			
-//			// Print game state
-//			States.displayGameState();
-//			
-//			// Check if goal reached
-//			if (States.checkPuzzleComplete()) {
-//				System.out.println("\nGoal reached.");
-//				break;
-//			}
-//			
-//			// Iterate move 
-//			i++;
+			Move selectedMove = allPossibleMoves.get(new Random().nextInt(allPossibleMoves.size()));
+			System.out.println("\n(" + selectedMove.getPieceNum() + "," + selectedMove.getMove() + ")\n");
+			
+			// Execute it
+			Movement.applyMove(state, selectedMove);
+			
+			// Normalize the game state
+			States.gameState = States.normalizeState(States.gameState);
+			
+			// Print game state
+			States.displayGameState();
+			
+			// Check if goal reached
+			if (States.checkPuzzleComplete()) {
+				System.out.println("\nGoal reached.");
+				break;
+			}
+			
+			// Iterate move 
+			i++;
 		}
 		
 		System.out.println("\nGame terminated.");
