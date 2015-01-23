@@ -28,29 +28,29 @@ public class GamePlay {
 		
 		for (int i = 0; i < N; i++) {
 			// Generate all possible moves in board
-			ArrayList<Move> allPossibleMoves = Movement.allPossibleMoves(state);
+			Piece[] allPossibleMoves = Movement.allPossibleMoves(state);
 			
 			// Select a possible move at random, and print it
-			Move selectedMove = allPossibleMoves.get(new Random().nextInt(allPossibleMoves.size()));
-			System.out.println("\n(" + selectedMove.getPieceNum() + "," + selectedMove.getMove() + ")\n");
-			
-			// Execute it
-			Movement.applyMove(state, selectedMove.getPieceNum(), selectedMove.getMove());
-			
-			// Normalize the game state
-			States.gameState = States.normalizeState(States.gameState);
-			
-			// Print game state
-			States.displayGameState();
-			
-			// Check if goal reached
-			if (States.checkPuzzleComplete()) {
-				System.out.println("\nGoal reached.");
-				break;
-			}
-			
-			// Iterate move 
-			i++;
+//			Move selectedMove = allPossibleMoves.get(new Random().nextInt(allPossibleMoves.size()));
+//			System.out.println("\n(" + selectedMove.getPieceNum() + "," + selectedMove.getMove() + ")\n");
+//			
+//			// Execute it
+//			Movement.applyMove(state, selectedMove.getPieceNum(), selectedMove.getMove());
+//			
+//			// Normalize the game state
+//			States.gameState = States.normalizeState(States.gameState);
+//			
+//			// Print game state
+//			States.displayGameState();
+//			
+//			// Check if goal reached
+//			if (States.checkPuzzleComplete()) {
+//				System.out.println("\nGoal reached.");
+//				break;
+//			}
+//			
+//			// Iterate move 
+//			i++;
 		}
 		
 		System.out.println("\nGame terminated.");

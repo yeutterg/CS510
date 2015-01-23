@@ -1,0 +1,42 @@
+import java.util.Set;
+
+// Constructor for moves each piece can make 
+
+public class Piece {
+	public static int pieceNum; 
+	public static Set<Character> possibleMoves;
+	
+	public Piece(int currentPieceNum, Set<Character> currentMoves) {
+		pieceNum = currentPieceNum;
+		possibleMoves = currentMoves;
+	}
+	
+	public int getPieceNum() {
+		return pieceNum;
+	}
+	
+	public Set<Character> getPossibleMoves() {
+		return possibleMoves;
+	}
+	
+	public boolean isMovePossible(char requestedMove) {
+		if (possibleMoves.contains(requestedMove)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public ArrayList<Move> generateIndividualMoves() {
+		ArrayList allMoves = new ArrayList<Move>();
+		
+		int i = 0;
+		for (Character thisMove : possibleMoves) {
+			allMoves[i] = new Move(pieceNum, thisMove);
+			i++;
+		}
+		
+		return allMoves;
+	}
+
+}

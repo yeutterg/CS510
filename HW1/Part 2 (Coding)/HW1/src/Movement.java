@@ -1,11 +1,6 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
-
 
 public class Movement {
 	
@@ -19,28 +14,15 @@ public class Movement {
 		
 		// locate piece in game state
 		ArrayList<int[]> pieceLocations = currentPieceLocations(state, pieceNum);
-//		System.out.println("Current piece = " + pieceNum);
-//		System.out.println("Current piece: ");
-//		for (int[] location : pieceLocations) {
-//			System.out.println(location[1] + "," + location[0]);
-//		}
 		
 		// look for all zeros (empty) in game state
 		ArrayList<int[]> zeroLocations = currentPieceLocations(state, 0);
 		possibleMovesArray.addAll(compareMoves(pieceLocations, zeroLocations));
-//		System.out.println("Zeros: ");
-//		for (int[] location : zeroLocations) {
-//			System.out.println(location[1] + "," + location[0]);
-//		}
 		
 		// if piece = master (2), look for -1 values as well
 		if (pieceNum == 2) {
 			ArrayList<int[]> negOneLocations = currentPieceLocations(state, -1);
 			possibleMovesArray.addAll(compareMoves(pieceLocations, negOneLocations));
-//			System.out.println("negOnes: ");
-//			for (int[] location : negOneLocations) {
-//				System.out.println(location[1] + "," + location[0]);
-//			}
 		}
 		
 		// Only add move to possible result set if all cells of piece can freely move up or down
@@ -72,7 +54,7 @@ public class Movement {
 		return new Piece(pieceNum, possibleMovesSet);
 	}
 	
-	public static ArrayList<Move> allPossibleMoves(int[][] state) {
+	public static Piece[] allPossibleMoves(int[][] state) {
 		// return all possible moves for all pieces given a game state
 		
 		// find all pieces in current game state (>= 2)
@@ -85,24 +67,20 @@ public class Movement {
 			}
 		}
 		
-		// run possiblePieceMoves for each value in currentPieces
+		// get all possible piece moves
 		Piece[] allPieces = new Piece[currentPieces.size()];
-		int i = 0;
-		for (int piece : currentPieces) {
-			allPieces[i] = possiblePieceMoves(state, piece);
-			i++;
+		for (int i = 0; i < currentPieces.size(); i++) {
+			int pieceNum = currentPieces.get(i);
+			allPieces[i] = possiblePieceMoves(state, pieceNum);
 		}
 		
-		// Parse allMoves array into array of individual moves and return
-		ArrayList<Move> individualMoves = new ArrayList<Move>();
-		for (Piece currentPiece : allPieces) {
-			Set<Character> possibleMoves = currentPiece.getPossibleMoves();
-			for (char currentMoveId : possibleMoves) {
-				individualMoves.add(new Move(currentPiece.getPieceNum(), currentMoveId));
-			}
+		for (int i = 0; i < allPieces.length; i++) {
+			Piece thisPiece = allPieces[i];
+			System.out.println(thisPiece.getPieceNum());
+			System.out.println(thisPiece.getPossibleMoves());
 		}
 		
-		return individualMoves;
+		return allPieces;
 	}
 	
 	public static void applyMove(int[][] state, int pieceNum, char requestedMove) {
