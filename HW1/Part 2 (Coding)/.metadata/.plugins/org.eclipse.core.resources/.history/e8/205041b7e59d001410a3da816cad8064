@@ -1,0 +1,14 @@
+import java.util.ArrayList;
+
+// Constructor for moves each piece can make 
+
+public class Move {
+	public int piece; 
+	public ArrayList<Character> possibleMoves;
+	
+	public Move(int currentPiece, ArrayList<Character> currentMoves) {
+		piece = currentPiece;
+		possibleMoves = currentMoves;
+	}
+
+}

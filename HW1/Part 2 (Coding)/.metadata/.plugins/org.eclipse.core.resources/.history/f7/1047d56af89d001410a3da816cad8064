@@ -1,0 +1,14 @@
+import java.util.Set;
+
+// Constructor for moves each piece can make 
+
+public class Move {
+	public int piece; 
+	public Set<Character> possibleMoves;
+	
+	public Move(int currentPiece, Set<Character> currentMoves) {
+		piece = currentPiece;
+		possibleMoves = currentMoves;
+	}
+
+}

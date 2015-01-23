@@ -1,0 +1,30 @@
+import java.util.Set;
+
+// Constructor for moves each piece can make 
+
+public class Move {
+	public static int piece; 
+	public static Set<Character> possibleMoves;
+	
+	public Move(int currentPiece, Set<Character> currentMoves) {
+		piece = currentPiece;
+		possibleMoves = currentMoves;
+	}
+	
+	public static int getPiece() {
+		return piece;
+	}
+	
+	public static Set<Character> getPossibleMoves() {
+		return possibleMoves;
+	}
+	
+	public boolean isMovePossible(char requestedMove) {
+		if (possibleMoves.contains(requestedMove)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+}

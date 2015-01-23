@@ -1,0 +1,42 @@
+import java.util.Random;
+
+public class GamePlay {
+	
+	// Part 2.F: Random Walks
+	
+	public static void randomWalks(int[][] state, int N) {
+		/*
+		 * Given a state and positive integer N:
+		 * 1. Generate all possible moves in the board
+		 * 2. Select one at random
+		 * 3. Execute it
+		 * 4. Normalize the resulting game state
+		 * 5. If goal reached, or if N moves have been executed, stop
+		 * 6. Otherwise, go back to 1
+		 */
+		
+		for (int i = 0; i < N; i++) {
+			// Generate all possible moves in board
+			Move[] allPossibleMoves = Movement.allPossiblePieceMoves(state);
+			
+			// Select a possible move at random
+			Move selectedMove = allPossibleMoves[new Random().nextInt(allPossibleMoves.length)];
+			
+			// Execute it
+			Movement.applyMove(state, selectedMove.getPiece(), selectedMove.getMove());
+			
+			// Normalize the game state
+			States.gameState = States.normalizeState(States.gameState);
+			
+			// Check if goal reached
+			if (States.checkPuzzleComplete()) {
+				break;
+			}
+			
+			// Iterate move 
+			i++;
+		}
+	}
+	
+
+}

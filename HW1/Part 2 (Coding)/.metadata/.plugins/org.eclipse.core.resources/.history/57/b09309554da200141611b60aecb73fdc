@@ -1,0 +1,58 @@
+import java.util.ArrayList;
+import java.util.Random;
+
+public class GamePlay {
+	
+	public static void main(String[] args) {
+		States.loadGameState("D:/Academic/Winter 2015/CS 510 Artificial Intelligence/Homework/HW1/HW1/SBP-level0.txt");
+		
+		// Execute random walks (2.F)
+		randomWalks(States.gameState, 3);
+	}
+	
+	// Part 2.F: Random Walks
+	
+	public static void randomWalks(int[][] state, int N) {
+		/*
+		 * Given a state and positive integer N:
+		 * 1. Generate all possible moves in the board
+		 * 2. Select one at random
+		 * 3. Execute it
+		 * 4. Normalize the resulting game state
+		 * 5. If goal reached, or if N moves have been executed, stop
+		 * 6. Otherwise, go back to 1
+		 */
+		
+		// Print initial game state
+		States.displayGameState();
+		
+		for (int i = 0; i < N; i++) {
+			// Generate all possible moves in board
+			ArrayList<Move> allPossibleMoves = Movement.allPossibleMoves(state);
+			
+			// Select a possible move at random, and print it
+			Move selectedMove = allPossibleMoves.get(new Random().nextInt(allPossibleMoves.size()));
+			System.out.println("\n(" + selectedMove.getPieceNum() + "," + selectedMove.getMove() + ")\n");
+			
+			// Execute it
+			Movement.applyMove(state, selectedMove.getPieceNum(), selectedMove.getMove());
+			
+			// Normalize the game state
+			States.gameState = States.normalizeState(States.gameState);
+			
+			// Print game state
+			States.displayGameState();
+			
+			// Check if goal reached
+			if (States.checkPuzzleComplete()) {
+				System.out.println("\nGoal reached.");
+				break;
+			}
+			
+			// Iterate move 
+			i++;
+		}
+	}
+	
+
+}

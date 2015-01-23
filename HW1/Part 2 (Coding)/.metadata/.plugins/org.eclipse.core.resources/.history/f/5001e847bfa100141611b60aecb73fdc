@@ -1,0 +1,26 @@
+import java.util.Set;
+
+
+public class Move {
+	
+	// Constructor for a move for a specific piece
+	
+	public static int pieceNum; 
+	public static char move;
+	
+	public Move(int currentPieceNum, char currentMove) {
+		pieceNum = currentPieceNum;
+		move = currentMove;
+	}
+	
+	public static int getPieceNum() {
+		return pieceNum;
+	}
+	
+	public static char getMove() {
+		return move;
+	}
+	
+	
+
+}

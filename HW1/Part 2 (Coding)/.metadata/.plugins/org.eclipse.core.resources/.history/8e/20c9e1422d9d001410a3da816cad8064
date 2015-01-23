@@ -1,0 +1,43 @@
+import java.util.ArrayList;
+
+
+public class Moves {
+	
+	// Part 2.C: Move Generation
+	
+	public static List<char> possiblePieceMoves(int[][] state, int piece) {
+		// return all possible moves for a piece given a game state
+		
+		// look for all zeros in game state
+		ArrayList<int[]> zeroLocations = new ArrayList<int[]>();
+		for (int[] row : state) {
+			for (int value : row) {
+				if (value == 0) {
+					return false;
+				}
+			}
+		}
+		
+		
+	}
+	
+	public static ArrayList<int[]> valueLocations(int[][] state, int value) {
+		// Find and return coordinates of specific value in specified game state
+		
+		ArrayList<int[]> locations = new ArrayList<int[]>();
+		int w = 0;
+		int h = 0;
+		for (int[] row : state) {
+			for (int num : row) {
+				if (num == value) {
+					locations.add(new int[] {h, w});
+				}
+				w++;
+			}
+			h++;
+			w = 0;
+		}
+		
+	}
+
+}
