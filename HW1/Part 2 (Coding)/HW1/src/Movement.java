@@ -89,6 +89,8 @@ public class Movement {
 		// move piece over cell(s), fill old location with zeros
 		ArrayList<int[]> originalLocations = currentPieceLocations(state, requestedMove.getPieceNum());
 		Piece possibleMoves = possiblePieceMoves(state, requestedMove.getPieceNum());
+		int numRight = 0; // number of times moved right
+		
 		for (int[] location : originalLocations) {
 			if (possibleMoves.isMovePossible(requestedMove.getMove())) {
 				int w = location[1];
@@ -105,8 +107,12 @@ public class Movement {
 				} else if (requestedMove.getMove() == 'r') {
 					// Move right
 					state[h][w+1] = requestedMove.getPieceNum();
+					numRight++;
 				}
-				state[h][w] = 0; // Make moved from cell empty
+				// empty moved from cell, unless we move right >1x
+				if (requestedMove.getMove() != 'r' || numRight <= 1) {
+					state[h][w] = 0; // Make moved from cell empty
+				}
 			}
 		}
 		States.gameState = state;
@@ -118,6 +124,8 @@ public class Movement {
 		// move piece over cell(s), fill old location with zeros
 		ArrayList<int[]> originalLocations = currentPieceLocations(state, requestedMove.getPieceNum());
 		Piece possibleMoves = possiblePieceMoves(state, requestedMove.getPieceNum());
+		int numRight = 0; // number of times moved right
+		
 		for (int[] location : originalLocations) {
 			if (possibleMoves.isMovePossible(requestedMove.getMove())) {
 				int w = location[1];
@@ -134,8 +142,12 @@ public class Movement {
 				} else if (requestedMove.getMove() == 'r') {
 					// Move right
 					state[h][w+1] = requestedMove.getPieceNum();
+					numRight++;
 				}
-				state[h][w] = 0; // Make moved from cell empty
+				// empty moved from cell, unless we move right >1x
+				if (requestedMove.getMove() != 'r' || numRight <= 1) {
+					state[h][w] = 0; // Make moved from cell empty
+				}
 			}
 		}
 		return state;
