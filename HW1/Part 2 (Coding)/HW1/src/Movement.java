@@ -60,7 +60,7 @@ public class Movement {
 		return allMoves;
 	}
 	
-	public static ArrayList<Move> allPossiblePieceMoves(int[][] state) {
+	public static Piece[] allPossiblePieceMoves(int[][] state) {
 		// return all possible moves for all pieces given a game state
 		
 		// find all pieces in current game state (>= 2)

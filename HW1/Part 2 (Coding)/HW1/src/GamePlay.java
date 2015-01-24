@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class GamePlay {
@@ -27,11 +27,8 @@ public class GamePlay {
 		States.displayGameState();
 		
 		for (int i = 0; i < N; i++) {
-			// Generate all possible moves in board
-			ArrayList<Move> allPossibleMoves = Movement.allPossiblePieceMoves(state);
-			
-			// Select a possible move at random, and print it
-			Move selectedMove = allPossibleMoves.get(new Random().nextInt(allPossibleMoves.size()));
+			// Select a possible move (out of all possible moved) at random, and print it
+			Move selectedMove = generateRandomMove(state);
 			System.out.println("\n(" + selectedMove.getPieceNum() + "," + selectedMove.getMove() + ")\n");
 			
 			// Execute it
@@ -54,6 +51,27 @@ public class GamePlay {
 		}
 		
 		System.out.println("\nGame terminated.");
+	}
+	
+	public static Move generateRandomMove(int[][] state) {
+		// find all possible moves in board, and pick one at random
+		
+		// Generate all possible moves in board
+		Piece[] allPossibleMoves = Movement.allPossibleMoves(state);
+		
+		// Add moves to a hash map
+		HashMap<Integer, Move> allMovesTable = new HashMap<Integer, Move>();
+		int i = 0;
+		for (Piece thisPiece : allPossibleMoves) {
+			for (char thisMove : thisPiece.getPossibleMoves()) {
+				allMovesTable.put(i, new Move(thisPiece.getPieceNum(), thisMove));
+				i++;
+			}
+		}
+		
+		// Pick a random move from the hash map and return it
+		int randomVal = new Random().nextInt(allMovesTable.size());
+		return allMovesTable.get(randomVal);		
 	}
 	
 
