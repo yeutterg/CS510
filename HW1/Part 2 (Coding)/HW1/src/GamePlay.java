@@ -57,7 +57,7 @@ public class GamePlay {
 		// find all possible moves in board, and pick one at random
 		
 		// Generate all possible moves in board
-		Piece[] allPossibleMoves = Movement.allPossibleMoves(state);
+		Piece[] allPossibleMoves = Movement.allPossiblePieceMoves(state);
 		
 		// Add moves to a hash map
 		HashMap<Integer, Move> allMovesTable = new HashMap<Integer, Move>();
