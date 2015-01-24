@@ -6,7 +6,7 @@ public class Movement {
 	
 	// Part 2.C: Move Generation
 	
-	public static ArrayList<Move> possiblePieceMoves(int[][] state, int pieceNum) {
+	public static Piece possiblePieceMoves(int[][] state, int pieceNum) {
 		// return all possible moves for a piece given a game state
 				
 		// initialize possible moves array
@@ -51,16 +51,10 @@ public class Movement {
 		
 		System.out.println("Possible: " + pieceNum + "," + possibleMovesSet);
 		
-		// Convert to moves and return
-		ArrayList<Move> allMoves = new ArrayList<Move>();
-		for (char thisMoveId : possibleMovesSet) {
-			allMoves.add(new Move(pieceNum, thisMoveId));
-		}
-		
-		return allMoves;
+		return new Piece(pieceNum, possibleMovesSet);
 	}
 	
-	public static Piece[] allPossiblePieceMoves(int[][] state) {
+	public static Piece[] allPossibleMoves(int[][] state) {
 		// return all possible moves for all pieces given a game state
 		
 		// find all pieces in current game state (>= 2)
@@ -73,27 +67,20 @@ public class Movement {
 			}
 		}
 		
-		// get all possible piece moves and return
-		ArrayList<Move> allMoves = new ArrayList<Move>();
-		for (int pieceNum : currentPieces) {
-			allMoves.addAll(possiblePieceMoves(state, pieceNum));
-			for (int i = 0; i < allMoves.size(); i++) {
-				Move thisMove = allMoves.get(i);
-				System.out.println(thisMove.getPieceNum());
-				System.out.println(thisMove.getMove());
-			}
+		// get all possible piece moves
+		Piece[] allPieces = new Piece[currentPieces.size()];
+		for (int i = 0; i < currentPieces.size(); i++) {
+			int pieceNum = currentPieces.get(i);
+			allPieces[i] = possiblePieceMoves(state, pieceNum);
 		}
 		
-		return allMoves;
-	}
-	
-	public static boolean isMovePossible(int[][] state, Move requestedMove) {
-		ArrayList<Move> possibleMoves = possiblePieceMoves(state, requestedMove.getPieceNum());
-		if (possibleMoves.contains(requestedMove)) {
-			return true;
-		} else {
-			return false;
+		for (int i = 0; i < allPieces.length; i++) {
+			Piece thisPiece = allPieces[i];
+			System.out.println(thisPiece.getPieceNum());
+			System.out.println(thisPiece.getPossibleMoves());
 		}
+		
+		return allPieces;
 	}
 	
 	public static void applyMove(int[][] state, Move requestedMove) {
@@ -101,32 +88,25 @@ public class Movement {
 		
 		// move piece over cell(s), fill old location with zeros
 		ArrayList<int[]> originalLocations = currentPieceLocations(state, requestedMove.getPieceNum());
-		int numRight = 0; // number of times moved right
-		
+		Piece possibleMoves = possiblePieceMoves(state, requestedMove.getPieceNum());
 		for (int[] location : originalLocations) {
-			if (isMovePossible(state, requestedMove)) {
+			if (possibleMoves.isMovePossible(requestedMove.getMove())) {
 				int w = location[1];
 				int h = location[0];
-				
 				if (requestedMove.getMove() == 'u') {
 					// Move up
 					state[h-1][w] = requestedMove.getPieceNum();					
-				} else if (requestedMove.getMove()  == 'd') {
+				} else if (requestedMove.getMove() == 'd') {
 					// Move down
 					state[h+1][w] = requestedMove.getPieceNum();
-				} else if (requestedMove.getMove()  == 'l') {
+				} else if (requestedMove.getMove() == 'l') {
 					// Move left
 					state[h][w-1] = requestedMove.getPieceNum();
 				} else if (requestedMove.getMove() == 'r') {
 					// Move right
 					state[h][w+1] = requestedMove.getPieceNum();
-					numRight++;
 				}
-				
-				// empty moved from cell, unless we move right >1x
-				if (requestedMove.getMove() != 'r' || numRight <= 1) {
-					state[h][w] = 0; // Make moved from cell empty
-				}
+				state[h][w] = 0; // Make moved from cell empty
 			}
 		}
 		States.gameState = state;
@@ -137,32 +117,25 @@ public class Movement {
 		
 		// move piece over cell(s), fill old location with zeros
 		ArrayList<int[]> originalLocations = currentPieceLocations(state, requestedMove.getPieceNum());
-		int numRight = 0; // number of times moved right
-		
+		Piece possibleMoves = possiblePieceMoves(state, requestedMove.getPieceNum());
 		for (int[] location : originalLocations) {
-			if (isMovePossible(state, requestedMove)) {
+			if (possibleMoves.isMovePossible(requestedMove.getMove())) {
 				int w = location[1];
 				int h = location[0];
-				
 				if (requestedMove.getMove() == 'u') {
 					// Move up
 					state[h-1][w] = requestedMove.getPieceNum();					
-				} else if (requestedMove.getMove()  == 'd') {
+				} else if (requestedMove.getMove() == 'd') {
 					// Move down
 					state[h+1][w] = requestedMove.getPieceNum();
-				} else if (requestedMove.getMove()  == 'l') {
+				} else if (requestedMove.getMove() == 'l') {
 					// Move left
 					state[h][w-1] = requestedMove.getPieceNum();
 				} else if (requestedMove.getMove() == 'r') {
 					// Move right
 					state[h][w+1] = requestedMove.getPieceNum();
-					numRight++;
 				}
-				
-				// empty moved from cell, unless we move right >1x
-				if (requestedMove.getMove() != 'r' || numRight <= 1) {
-					state[h][w] = 0; // Make moved from cell empty
-				}
+				state[h][w] = 0; // Make moved from cell empty
 			}
 		}
 		return state;
