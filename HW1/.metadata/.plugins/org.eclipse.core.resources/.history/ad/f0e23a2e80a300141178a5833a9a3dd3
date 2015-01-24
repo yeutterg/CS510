@@ -1,0 +1,78 @@
+import java.util.HashMap;
+import java.util.Random;
+
+public class GamePlay {
+	
+	public static void main(String[] args) {
+		States.loadGameState("D:/Academic/Winter 2015/CS 510 Artificial Intelligence/Homework/HW1/HW1/SBP-level2.txt");
+		
+		// Execute random walks (2.F)
+		randomWalks(States.gameState, 3);
+	}
+	
+	// Part 2.F: Random Walks
+	
+	public static void randomWalks(int[][] state, int N) {
+		/*
+		 * Given a state and positive integer N:
+		 * 1. Generate all possible moves in the board
+		 * 2. Select one at random
+		 * 3. Execute it
+		 * 4. Normalize the resulting game state
+		 * 5. If goal reached, or if N moves have been executed, stop
+		 * 6. Otherwise, go back to 1
+		 */
+		
+		// Print initial game state
+		States.displayGameState();
+		
+		for (int i = 0; i < N; i++) {
+			// Select a possible move (out of all possible moved) at random, and print it
+			Move selectedMove = generateRandomMove(state);
+			System.out.println("\n(" + selectedMove.getPieceNum() + "," + selectedMove.getMove() + ")\n");
+			
+			// Execute it
+			Movement.applyMove(state, selectedMove);
+			
+			// Normalize the game state
+			States.gameState = States.normalizeState(States.gameState);
+			
+			// Print game state
+			States.displayGameState();
+			
+			// Check if goal reached
+			if (States.checkPuzzleComplete()) {
+				System.out.println("\nGoal reached.");
+				break;
+			}
+			
+			// Iterate move 
+			i++;
+		}
+		
+		System.out.println("\nGame terminated.");
+	}
+	
+	public static Move generateRandomMove(int[][] state) {
+		// find all possible moves in board, and pick one at random
+		
+		// Generate all possible moves in board
+		Piece[] allPossibleMoves = Movement.allPossiblePieceMoves(state);
+
+		// Add moves to a hash map
+		HashMap<Integer, Move> allMovesTable = new HashMap<Integer, Move>();
+		int i = 0;
+		for (Piece thisPiece : allPossibleMoves) {
+			for (char thisMove : thisPiece.getPossibleMoves()) {
+				allMovesTable.put(i, new Move(thisPiece.getPieceNum(), thisMove));
+				i++;
+			}
+		}
+		
+		// Pick a random move from the hash map and return it
+		int randomVal = new Random().nextInt(allMovesTable.size());
+		return allMovesTable.get(randomVal);		
+	}
+	
+
+}
