@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class SearchGeneration {
 
+    public Node currentNode;
+    public ArrayList<Node> frontier;
+    public ArrayList<Node> explored;
+
     public static Node childNode(Node parent, Move action) {
         // Given a parent node and a (legal) action, return the child node
 
@@ -25,4 +29,6 @@ public class SearchGeneration {
         // Return the child node
         return new Node(newState, parent, newAction, newPathCost);
     }
+
+
 }

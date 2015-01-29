@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class StateGeneration {
 
     // Variables
-    static State gameState = null;
+    public static State gameState = null;
 
     /*
      * Load, display, and clone game state
@@ -21,6 +21,11 @@ public class StateGeneration {
 
     public static void loadGameState(String fileName) {
         // Load predefined game state from a text file
+        gameState = loadState(fileName);
+    }
+
+    public static State loadState(String fileName) {
+        // Load predefined state from a text file and return it
 
         // Initialize scanner and input array, input file
         ArrayList<Integer> rawInput = new ArrayList<Integer>();
@@ -48,13 +53,17 @@ public class StateGeneration {
         }
 
         // Parse input and apply it to gameState
-        parseInputToGameState(rawInput); // pass ArrayList to be parsed
+        State newState = parseInputToState(rawInput); // pass ArrayList to be parsed
 
-        // Generate all pieces in gameState
-        MoveGeneration.loadAllPieces();
+        return newState;
     }
 
     public static void parseInputToGameState(ArrayList<Integer> input) {
+        // Parse ArrayList input to the integer matrix gameState
+        gameState = parseInputToState(input);
+    }
+
+    public static State parseInputToState(ArrayList<Integer> input) {
         // Parse ArrayList input to the integer matrix gameState
 
         // Populate gameState with values
@@ -76,7 +85,27 @@ public class StateGeneration {
                 w++;
             }
         }
-        gameState = new State(positionArray, width, height);
+
+        // Generate all pieces in state
+        // find all pieces in current state (>= 2)
+        ArrayList<Integer> currentPieces = new ArrayList<Integer>();
+        for (int[] row : positionArray) {
+            for (int value : row) {
+                if (!currentPieces.contains(value) && (value >= 2)) {
+                    currentPieces.add(value);
+                }
+            }
+        }
+
+        // Load all pieces and associated moves
+        Piece[] newPieces = new Piece[currentPieces.size()];
+        int i = 0;
+        for (int thisPieceNum : currentPieces) {
+            newPieces[i] = new Piece(thisPieceNum, MoveGeneration.possiblePieceMoves(positionArray, thisPieceNum));
+            i++;
+        }
+
+        return new State(positionArray, width, height, newPieces);
     }
 
     public static void displayGameState() {

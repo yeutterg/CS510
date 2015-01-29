@@ -12,10 +12,11 @@ public class State {
     public int height;
     public Piece[] allPieces;
 
-    public State(int[][] positions, int width, int height) {
+    public State(int[][] positions, int width, int height, Piece[] allPieces) {
         this.positions = positions;
         this.width = width;
         this.height = height;
+        this.allPieces = allPieces;
     }
 
     public State(State givenState) {
