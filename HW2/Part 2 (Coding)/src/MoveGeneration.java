@@ -23,7 +23,7 @@ public class MoveGeneration {
 
         // find all pieces in current game state (>= 2)
         ArrayList<Integer> currentPieces = new ArrayList<Integer>();
-        for (int[] row : StateGeneration.gameState) {
+        for (int[] row : StateGeneration.gameState.getPositions()) {
             for (int value : row) {
                 if (!currentPieces.contains(value) && (value >= 2)) {
                     currentPieces.add(value);
@@ -75,22 +75,22 @@ public class MoveGeneration {
         return allPossibleMoves;
     }
 
-    public static ArrayList<Character> possiblePieceMoves(int[][] state, int pieceNum) {
+    public static ArrayList<Character> possiblePieceMoves(State givenState, int pieceNum) {
         // Return all possible moves for a piece given a game state
 
         // initialize possible moves array
         ArrayList<Character> possibleMovesArray = new ArrayList<Character>();
 
         // locate piece in game state
-        ArrayList<int[]> pieceLocations = currentPieceLocations(state, pieceNum);
+        ArrayList<int[]> pieceLocations = currentPieceLocations(givenState, pieceNum);
 
         // look for all zeros (empty) in game state
-        ArrayList<int[]> zeroLocations = currentPieceLocations(state, 0);
+        ArrayList<int[]> zeroLocations = currentPieceLocations(givenState, 0);
         possibleMovesArray.addAll(compareLocations(pieceLocations, zeroLocations));
 
         // if piece = master (2), look for -1 values as well
         if (pieceNum == 2) {
-            ArrayList<int[]> negOneLocations = currentPieceLocations(state, -1);
+            ArrayList<int[]> negOneLocations = currentPieceLocations(givenState, -1);
             possibleMovesArray.addAll(compareLocations(pieceLocations, negOneLocations));
         }
 
@@ -128,7 +128,7 @@ public class MoveGeneration {
      * Move application
      */
 
-    public static void applyMove(int[][] state, Move requestedMove) {
+    public static void applyMove(State givenState, Move requestedMove) {
         // Apply requested move to given state
 
         // Find index of piece in allPieces array
@@ -143,8 +143,8 @@ public class MoveGeneration {
         }
 
         // Move piece over cell(s), fill old location with zeros
-        ArrayList<int[]> originalLocations = currentPieceLocations(state, pieceNum);
-        ArrayList<Character> possibleMoves = possiblePieceMoves(state, pieceNum);
+        ArrayList<int[]> originalLocations = currentPieceLocations(givenState, pieceNum);
+        ArrayList<Character> possibleMoves = possiblePieceMoves(givenState, pieceNum);
         int numRight = 0; // number of times moved right
         int hTrack = 0; // keep track of changes in height
 
@@ -161,39 +161,39 @@ public class MoveGeneration {
 
                 if (moveId == 'u') {
                     // Move up
-                    state[h-1][w] = pieceNum;
+                    givenState.positions[h-1][w] = pieceNum;
                 } else if (moveId == 'd') {
                     // Move down
-                    state[h+1][w] = pieceNum;
+                    givenState.positions[h+1][w] = pieceNum;
                 } else if (moveId == 'l') {
                     // Move left
-                    state[h][w-1] = pieceNum;
+                    givenState.positions[h][w-1] = pieceNum;
                 } else if (moveId == 'r') {
                     // Move right
-                    state[h][w+1] = pieceNum;
+                    givenState.positions[h][w+1] = pieceNum;
                     numRight++;
                 }
 
                 // empty moved from cell, unless we move right >1x
                 if (moveId != 'r' || numRight <= 1) {
-                    state[h][w] = 0; // Make moved from cell empty
+                    givenState.positions[h][w] = 0; // Make moved from cell empty
                 }
             }
         }
-        StateGeneration.gameState = state;
+        StateGeneration.gameState = givenState;
     }
 
-    public static int[][] applyMoveCloning(int[][] state, Move requestedMove) {
+    public static State applyMoveCloning(State givenState, Move requestedMove) {
         // Clone input state, apply requested move to new state
 
         // Clone state
-        int[][] newState = state.clone();
+        State newState = StateGeneration.cloneState(givenState);
 
         // Find index of piece in allPieces array
         int pieceNum = requestedMove.getPieceNum();
         char moveId = requestedMove.getMoveId();
         int arrayIndex = 0;
-        for (Piece currentPiece : allPieces) {
+        for (Piece currentPiece : givenState.getAllPieces()) {
             if (currentPiece.getPieceNum() == pieceNum) {
                 break;
             }
@@ -219,22 +219,22 @@ public class MoveGeneration {
 
                 if (moveId == 'u') {
                     // Move up
-                    state[h-1][w] = pieceNum;
+                    newState.positions[h-1][w] = pieceNum;
                 } else if (moveId == 'd') {
                     // Move down
-                    state[h+1][w] = pieceNum;
+                    newState.positions[h+1][w] = pieceNum;
                 } else if (moveId == 'l') {
                     // Move left
-                    state[h][w-1] = pieceNum;
+                    newState.positions[h][w-1] = pieceNum;
                 } else if (moveId == 'r') {
                     // Move right
-                    state[h][w+1] = pieceNum;
+                    newState.positions[h][w+1] = pieceNum;
                     numRight++;
                 }
 
                 // empty moved from cell, unless we move right >1x
                 if (moveId != 'r' || numRight <= 1) {
-                    state[h][w] = 0; // Make moved from cell empty
+                    newState.positions[h][w] = 0; // Make moved from cell empty
                 }
             }
         }
@@ -245,13 +245,13 @@ public class MoveGeneration {
      * Piece (integer in state) location tracking and comparison
      */
 
-    public static ArrayList<int[]> currentPieceLocations(int[][] state, int pieceNum) {
+    public static ArrayList<int[]> currentPieceLocations(State givenState, int pieceNum) {
         // Find and return coordinates of specific value in specified game state
 
         ArrayList<int[]> locations = new ArrayList<int[]>();
         int w = 0;
         int h = 0;
-        for (int[] row : state) {
+        for (int[] row : givenState.getPositions()) {
             for (int num : row) {
                 if (num == pieceNum) {
                     locations.add(new int[] {h, w});
@@ -303,11 +303,11 @@ public class MoveGeneration {
      * Random move generation
      */
 
-    public static Move generateRandomMove(int[][] state) {
+    public static Move generateRandomMove(State givenState) {
         // Find all possible moves in board, and pick one at random
 
         // Update all possible moves in board and get an ArrayList of them
-        ArrayList<Move> allPossibleMoves = allPossiblePieceMoves(state);
+        ArrayList<Move> allPossibleMoves = allPossiblePieceMoves(givenState.getPositions());
 
         // Pick a random index and return the move
         return allPossibleMoves.get(new Random().nextInt(allPossibleMoves.size()));

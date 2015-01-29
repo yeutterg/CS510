@@ -20,4 +20,19 @@ public class Node {
         this.pathCost = pathCost;
     }
 
+    public State getState() {
+        return currentState;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public ArrayList<Move> getAction() {
+        return action;
+    }
+
+    public int getPathCost() {
+        return pathCost;
+    }
 }

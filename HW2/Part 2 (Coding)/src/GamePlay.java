@@ -12,13 +12,13 @@ public class GamePlay {
         StateGeneration.loadGameState("D:/Academic/Winter 2015/CS 510 Artificial Intelligence/Homework/HW1/HW1/SBP-level3.txt");
 
         // Execute random walks (HW1, 2.F)
-        // randomWalks(States.gameState, 100);
+        randomWalks(StateGeneration.gameState, 100);
 
         // Execute breadth-first search (HW1, 2.A)
 
     }
 
-    public static void randomWalks(int[][] state, int N) {
+    public static void randomWalks(State givenState, int N) {
         /*
 		 * Given a state and positive integer N:
 		 * 1. Generate all possible moves in the board
@@ -35,13 +35,13 @@ public class GamePlay {
         for (int i = 0; i < N; i++) {
 
             // Select a random (possible) move
-            Move selectedMove = MoveGeneration.generateRandomMove(state);
+            Move selectedMove = MoveGeneration.generateRandomMove(givenState);
 
             // Print the selected move
             System.out.println("\n(" + selectedMove.getPieceNum() + ", " + selectedMove.getMoveId() + ")\n");
 
             // Apply the selected move
-            MoveGeneration.applyMove(state, selectedMove);
+            MoveGeneration.applyMove(givenState, selectedMove);
 
             // Normalize the resulting game state
             StateGeneration.gameState = StateGeneration.normalizeState(StateGeneration.gameState);
@@ -50,7 +50,7 @@ public class GamePlay {
             StateGeneration.displayGameState();
 
             // Check if goal reached
-            if (StateGeneration.checkPuzzleComplete()) {
+            if (StateGeneration.checkPuzzleComplete(StateGeneration.gameState)) {
                 System.out.println("\nGoal reached.");
                 break;
             }
@@ -59,7 +59,7 @@ public class GamePlay {
         System.out.println("\nGame terminated.");
     }
 
-    public static void breadthFirstSearch(int[][] state) {
+    public static void breadthFirstSearch(State givenState) {
         // Given an input state, apply a breadth-first search to solve the puzzle
 
         // Keep track of states visited so far

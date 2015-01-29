@@ -13,9 +13,7 @@ import java.util.Scanner;
 public class StateGeneration {
 
     // Variables
-    static int[][] gameState = null;
-    static int width = 0;
-    static int height = 0;
+    static State gameState = null;
 
     /*
      * Load, display, and clone game state
@@ -59,39 +57,31 @@ public class StateGeneration {
     public static void parseInputToGameState(ArrayList<Integer> input) {
         // Parse ArrayList input to the integer matrix gameState
 
-        // Set up w,h of gameState
-        width = input.get(0);
-        height = input.get(1);
-        gameState = new int[height][width]; // set up gameState matrix with specified w,h
-
         // Populate gameState with values
         int w = 0;
         int h = 0;
+        int width = input.get(0);
+        int height = input.get(1);
+        int[][] positionArray = new int[height][width];
         for (int i = 2; i < input.size(); i++) {
             if (w < width) {
                 // fill row
-                gameState[h][w] = input.get(i);
+                positionArray[h][w] = input.get(i);
                 w++;
             } else {
                 // next row
                 w = 0;
                 h++;
-                gameState[h][w] = input.get(i);
+                positionArray[h][w] = input.get(i);
                 w++;
             }
         }
+        gameState = new State(positionArray, width, height);
     }
 
     public static void displayGameState() {
         // Display current game state in the console
-
-        System.out.println(width + "," + height + ",");
-        for (int h = 0; h < height; h++) {
-            for (int w = 0; w < width; w++) {
-                System.out.print(gameState[h][w] + ",");
-            }
-            System.out.print("\n");
-        }
+        displayState(gameState);
     }
 
     public static void displayState(State givenState) {
@@ -106,9 +96,9 @@ public class StateGeneration {
         }
     }
 
-    public static int[][] cloneGameState() {
+    public static State cloneGameState() {
         // Clone the current game state and return it
-        return gameState.clone();
+        return cloneState(gameState);
     }
 
     public static State cloneState(State givenState) {
@@ -120,13 +110,13 @@ public class StateGeneration {
      * Puzzle completion check
      */
 
-    public static boolean checkPuzzleComplete() {
+    public static boolean checkPuzzleComplete(State givenState) {
         // Check if Puzzle complete (contains no -1)
         // Return true if complete, false if not
 
         // Iterate through game state
         // Return false (and break) as soon as -1 encountered
-        for (int[] row : gameState) {
+        for (int[] row : givenState.getPositions()) {
             for (int value : row) {
                 if (value == -1) {
                     return false;
@@ -153,39 +143,49 @@ public class StateGeneration {
         }
     }
 
+    public static boolean compareStates(State state1, State state2) {
+        // Compare two states, return true if identical, false if not
+        // Using the java "equals" function as it is simpler in this case
+
+        if (state1.getPositions().equals(state2.getPositions())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /*
      * State normalization: make sure states are equivalent even if int values different
      */
 
-    public static int[][] normalizeState(int[][] state) {
+    public static State normalizeState(State givenState) {
         // Normalize state
 
         int nextIdx = 3;
-        for (int h = 0; h < height; h++) {
-            for (int w = 0; w < width; w++) {
-                if (state[h][w] == nextIdx) {
+        for (int h = 0; h < givenState.getHeight(); h++) {
+            for (int w = 0; w < givenState.getWidth(); w++) {
+                if (givenState.getPositions()[h][w] == nextIdx) {
                     nextIdx++;
-                } else if (state[h][w] > nextIdx) {
-                    swapIdx(state, nextIdx, state[h][w]);
+                } else if (givenState.getPositions()[h][w] > nextIdx) {
+                    swapIdx(givenState, nextIdx, givenState.getPositions()[h][w]);
                     nextIdx++;
                 }
             }
         }
-        return state;
+        return givenState;
     }
 
-    public static int[][] swapIdx(int[][] state, int idx1, int idx2) {
+    public static void swapIdx(State givenState, int idx1, int idx2) {
         // Swap values to aid in normalizing state
 
-        for (int h = 0; h < height; h++) {
-            for (int w = 0; w < width; w++) {
-                if (state[h][w] == idx1) {
-                    state[h][w] = idx2;
-                } else if (state[h][w] == idx2) {
-                    state[h][w] = idx1;
+        for (int h = 0; h < givenState.getHeight(); h++) {
+            for (int w = 0; w < givenState.getWidth(); w++) {
+                if (givenState.getPositions()[h][w] == idx1) {
+                    givenState.setSinglePosition(h, w, idx2);
+                } else if (givenState.getPositions()[h][w] == idx2) {
+                    givenState.setSinglePosition(h, w, idx1);
                 }
             }
         }
-        return state;
     }
 }

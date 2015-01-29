@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * CS510 Winter 2015
  * Greg Yeutter
@@ -6,4 +8,21 @@
  */
 
 public class SearchGeneration {
+
+    public static Node childNode(Node parent, Move action) {
+        // Given a parent node and a (legal) action, return the child node
+
+        // Add to action
+        ArrayList<Move> newAction = parent.getAction();
+        newAction.add(action);
+
+        // Increment path cost
+        int newPathCost = parent.getPathCost() + 1;
+
+        // Perform move and add to new state
+        State newState = MoveGeneration.applyMoveCloning(parent.getState(), action);
+
+        // Return the child node
+        return new Node(newState, parent, newAction, newPathCost);
+    }
 }
