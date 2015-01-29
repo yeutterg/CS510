@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * CS510 Winter 2015
  * Greg Yeutter
@@ -11,6 +13,7 @@ public class State {
     public int width;
     public int height;
     public Piece[] allPieces;
+    public ArrayList<Move> allPossibleMoves;
 
     public State(int[][] positions, int width, int height, Piece[] allPieces) {
         this.positions = positions;
@@ -23,6 +26,8 @@ public class State {
         this.positions = givenState.getPositions();
         this.width = givenState.getWidth();
         this.height = givenState.getHeight();
+        this.allPieces = givenState.getAllPieces();
+        this.allPossibleMoves = givenState.getAllPossibleMoves();
     }
 
     public int[][] getPositions() {
@@ -39,6 +44,10 @@ public class State {
 
     public Piece[] getAllPieces() {
         return allPieces;
+    }
+
+    public ArrayList<Move> getAllPossibleMoves() {
+        return allPossibleMoves;
     }
 
     public void setWidth(int width) {
@@ -61,5 +70,9 @@ public class State {
         int[][] newPositions = getPositions();
         newPositions[h][w] = value;
         this.positions = newPositions;
+    }
+
+    public void setPossibleMoves(ArrayList<Move> allPossibleMoves) {
+        this.allPossibleMoves = allPossibleMoves;
     }
 }

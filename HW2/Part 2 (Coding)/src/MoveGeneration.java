@@ -18,11 +18,11 @@ public class MoveGeneration {
      * Check for possible piece moves
      */
 
-    public static boolean isMovePossible(Piece requestedPiece, char requestedMove) {
+    public static boolean isMovePossible(State givenState, Piece requestedPiece, char requestedMove) {
         // Check if move possible in current game state
 
         // Update possible moves for requested piece
-        requestedPiece.setPossibleMoves(possiblePieceMoves(StateGeneration.gameState, requestedPiece.getPieceNum()));
+        requestedPiece.setPossibleMoves(possiblePieceMoves(givenState, requestedPiece.getPieceNum()));
 
         // Check if possible moves set contains the requested move
         if (requestedPiece.getPossibleMoves().contains(requestedMove)) {
@@ -172,7 +172,7 @@ public class MoveGeneration {
         int numRight = 0; // number of times moved right
         int hTrack = 0; // keep track of changes in height
 
-        if (isMovePossible(givenState.getAllPieces()[arrayIndex], moveId)) {
+        if (isMovePossible(givenState, givenState.getAllPieces()[arrayIndex], moveId)) {
             for (int[] location : originalLocations) {
                 int w = location[1];
                 int h = location[0];
@@ -230,7 +230,7 @@ public class MoveGeneration {
         int numRight = 0; // number of times moved right
         int hTrack = 0; // keep track of changes in height
 
-        if (isMovePossible(allPieces[arrayIndex], moveId)) {
+        if (isMovePossible(newState, newState.getAllPieces()[arrayIndex], moveId)) {
             for (int[] location : originalLocations) {
                 int w = location[1];
                 int h = location[0];
@@ -243,25 +243,29 @@ public class MoveGeneration {
 
                 if (moveId == 'u') {
                     // Move up
-                    newState.positions[h-1][w] = pieceNum;
+                    newState.setSinglePosition(h-1, w, pieceNum);
                 } else if (moveId == 'd') {
                     // Move down
-                    newState.positions[h+1][w] = pieceNum;
+                    newState.setSinglePosition(h+1, w, pieceNum);
                 } else if (moveId == 'l') {
                     // Move left
-                    newState.positions[h][w-1] = pieceNum;
+                    newState.setSinglePosition(h, w-1, pieceNum);
                 } else if (moveId == 'r') {
                     // Move right
-                    newState.positions[h][w+1] = pieceNum;
+                    newState.setSinglePosition(h, w+1, pieceNum);
                     numRight++;
                 }
 
                 // empty moved from cell, unless we move right >1x
                 if (moveId != 'r' || numRight <= 1) {
-                    newState.positions[h][w] = 0; // Make moved from cell empty
+                    newState.setSinglePosition(h, w, 0); // Make moved from cell empty
                 }
             }
         }
+
+        // Update list of possible piece moves in new state
+        newState.setPossibleMoves(allPossiblePieceMoves(newState));
+
         return newState;
     }
 

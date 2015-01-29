@@ -105,7 +105,12 @@ public class StateGeneration {
             i++;
         }
 
-        return new State(positionArray, width, height, newPieces);
+        State newState = new State(positionArray, width, height, newPieces);
+
+        // Get all possible moves for state
+        newState.setPossibleMoves(MoveGeneration.allPossiblePieceMoves(newState));
+
+        return newState;
     }
 
     public static void displayGameState() {
