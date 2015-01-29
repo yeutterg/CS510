@@ -9,7 +9,7 @@ public class GamePlay {
 
     public static void main(String[] args) {
         // Load game state
-        States.loadGameState("D:/Academic/Winter 2015/CS 510 Artificial Intelligence/Homework/HW1/HW1/SBP-level0.txt");
+        States.loadGameState("D:/Academic/Winter 2015/CS 510 Artificial Intelligence/Homework/HW1/HW1/SBP-level3.txt");
 
         // Execute random walks (HW1, 2.F)
         randomWalks(States.gameState, 100);

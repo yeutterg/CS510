@@ -99,7 +99,7 @@ public class MoveGeneration {
         Set<Character> possibleMovesSet = new HashSet<Character>();
 
         for (Character currentMove : possibleMovesArray) {
-            if (pieceLocations.size() > 1 && ((currentMove == 'u') || currentMove == 'd')) {
+            if (pieceLocations.size() > 1) {
                 // If more than one cell, we need to check
                 int numInstances = 0;
                 for (int i = 0; i < possibleMovesArray.size(); i++) {
@@ -146,11 +146,19 @@ public class MoveGeneration {
         ArrayList<int[]> originalLocations = currentPieceLocations(state, pieceNum);
         ArrayList<Character> possibleMoves = possiblePieceMoves(state, pieceNum);
         int numRight = 0; // number of times moved right
+        int hTrack = 0; // keep track of changes in height
 
         if (isMovePossible(allPieces[arrayIndex], moveId)) {
             for (int[] location : originalLocations) {
                 int w = location[1];
                 int h = location[0];
+
+                if (hTrack != h) {
+                    // reset numRight
+                    hTrack = h;
+                    numRight = 0;
+                }
+
                 if (moveId == 'u') {
                     // Move up
                     state[h-1][w] = pieceNum;
@@ -196,29 +204,37 @@ public class MoveGeneration {
         ArrayList<int[]> originalLocations = currentPieceLocations(newState, pieceNum);
         ArrayList<Character> possibleMoves = possiblePieceMoves(newState, pieceNum);
         int numRight = 0; // number of times moved right
+        int hTrack = 0; // keep track of changes in height
 
-        for (int[] location : originalLocations) {
-            if (isMovePossible(allPieces[arrayIndex], moveId)) {
+        if (isMovePossible(allPieces[arrayIndex], moveId)) {
+            for (int[] location : originalLocations) {
                 int w = location[1];
                 int h = location[0];
+
+                if (hTrack != h) {
+                    // reset numRight
+                    hTrack = h;
+                    numRight = 0;
+                }
+
                 if (moveId == 'u') {
                     // Move up
-                    newState[h-1][w] = pieceNum;
+                    state[h-1][w] = pieceNum;
                 } else if (moveId == 'd') {
                     // Move down
-                    newState[h+1][w] = pieceNum;
+                    state[h+1][w] = pieceNum;
                 } else if (moveId == 'l') {
                     // Move left
-                    newState[h][w-1] = pieceNum;
+                    state[h][w-1] = pieceNum;
                 } else if (moveId == 'r') {
                     // Move right
-                    newState[h][w+1] = pieceNum;
+                    state[h][w+1] = pieceNum;
                     numRight++;
                 }
 
                 // empty moved from cell, unless we move right >1x
                 if (moveId != 'r' || numRight <= 1) {
-                    newState[h][w] = 0; // Make moved from cell empty
+                    state[h][w] = 0; // Make moved from cell empty
                 }
             }
         }
