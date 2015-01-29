@@ -65,7 +65,7 @@ public class BreadthFirstSearch {
                 }
 
                 // If not in explored or frontier see if goal reached. If not goal, add to frontier
-                if (!inFrontier && !inExplored) {
+                if (!inFrontier || !inExplored) {
 
                     // Perform goal test on child state and return solution if goal reached
                     if (StateGeneration.checkPuzzleComplete(currentChildNode.getState())) {
