@@ -9,10 +9,13 @@ public class GamePlay {
 
     public static void main(String[] args) {
         // Load game state
-        States.loadGameState("D:/Academic/Winter 2015/CS 510 Artificial Intelligence/Homework/HW1/HW1/SBP-level3.txt");
+        StateGeneration.loadGameState("D:/Academic/Winter 2015/CS 510 Artificial Intelligence/Homework/HW1/HW1/SBP-level3.txt");
 
         // Execute random walks (HW1, 2.F)
-        randomWalks(States.gameState, 100);
+        // randomWalks(States.gameState, 100);
+
+        // Execute breadth-first search (HW1, 2.A)
+
     }
 
     public static void randomWalks(int[][] state, int N) {
@@ -27,7 +30,7 @@ public class GamePlay {
 		 */
 
         // Print initial game state
-        States.displayGameState();
+        StateGeneration.displayGameState();
 
         for (int i = 0; i < N; i++) {
 
@@ -41,18 +44,25 @@ public class GamePlay {
             MoveGeneration.applyMove(state, selectedMove);
 
             // Normalize the resulting game state
-            States.gameState = States.normalizeState(States.gameState);
+            StateGeneration.gameState = StateGeneration.normalizeState(StateGeneration.gameState);
 
             // Print the current game state
-            States.displayGameState();
+            StateGeneration.displayGameState();
 
             // Check if goal reached
-            if (States.checkPuzzleComplete()) {
+            if (StateGeneration.checkPuzzleComplete()) {
                 System.out.println("\nGoal reached.");
                 break;
             }
         }
 
         System.out.println("\nGame terminated.");
+    }
+
+    public static void breadthFirstSearch(int[][] state) {
+        // Given an input state, apply a breadth-first search to solve the puzzle
+
+        // Keep track of states visited so far
+
     }
 }

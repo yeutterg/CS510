@@ -23,7 +23,7 @@ public class MoveGeneration {
 
         // find all pieces in current game state (>= 2)
         ArrayList<Integer> currentPieces = new ArrayList<Integer>();
-        for (int[] row : States.gameState) {
+        for (int[] row : StateGeneration.gameState) {
             for (int value : row) {
                 if (!currentPieces.contains(value) && (value >= 2)) {
                     currentPieces.add(value);
@@ -35,7 +35,7 @@ public class MoveGeneration {
         allPieces = new Piece[currentPieces.size()];
         int i = 0;
         for (int thisPieceNum : currentPieces) {
-            allPieces[i] = new Piece(thisPieceNum, possiblePieceMoves(States.gameState, thisPieceNum));
+            allPieces[i] = new Piece(thisPieceNum, possiblePieceMoves(StateGeneration.gameState, thisPieceNum));
             i++;
         }
     }
@@ -48,7 +48,7 @@ public class MoveGeneration {
         // Check if move possible in current game state
 
         // Update possible moves for requested piece
-        requestedPiece.setPossibleMoves(possiblePieceMoves(States.gameState, requestedPiece.getPieceNum()));
+        requestedPiece.setPossibleMoves(possiblePieceMoves(StateGeneration.gameState, requestedPiece.getPieceNum()));
 
         // Check if possible moves set contains the requested move
         if (requestedPiece.getPossibleMoves().contains(requestedMove)) {
@@ -66,7 +66,7 @@ public class MoveGeneration {
         for (int i = 0; i < allPieces.length; i++) {
             Piece currentPiece = allPieces[i];
             currentPiece.setPossibleMoves(new ArrayList<Character>()); // empty it first
-            currentPiece.setPossibleMoves(possiblePieceMoves(States.gameState, currentPiece.getPieceNum()));
+            currentPiece.setPossibleMoves(possiblePieceMoves(StateGeneration.gameState, currentPiece.getPieceNum()));
             for (char currentMoveId : currentPiece.getPossibleMoves()) {
                 allPossibleMoves.add(new Move(currentPiece.getPieceNum(), currentMoveId));
             }
@@ -180,7 +180,7 @@ public class MoveGeneration {
                 }
             }
         }
-        States.gameState = state;
+        StateGeneration.gameState = state;
     }
 
     public static int[][] applyMoveCloning(int[][] state, Move requestedMove) {
