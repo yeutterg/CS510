@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class SearchGeneration {
 
     public static Node currentNode;
+    public static Node currentChildNode;
     public static ArrayList<Node> frontier;
     public static ArrayList<State> explored;
 
@@ -23,11 +24,19 @@ public class SearchGeneration {
         // Increment path cost
         int newPathCost = parent.getPathCost() + 1;
 
+        // debug
+        System.out.println("parent node:");
+        StateGeneration.displayState(parent.getState());
+
         // Perform move and add to new state
         State newState = MoveGeneration.applyMoveCloning(parent.getState(), action);
 
         // Normalize state
         newState = StateGeneration.normalizeState(newState);
+
+        //debug
+        System.out.println("Child node");
+        StateGeneration.displayState(newState);
 
         // Return the child node
         return new Node(newState, parent, newAction, newPathCost);
@@ -37,10 +46,11 @@ public class SearchGeneration {
         // Set up a search problem
 
         // Normalize State
-        givenState = StateGeneration.normalizeState(givenState);
+        State newState = new State(givenState);
+        newState = StateGeneration.normalizeState(givenState);
 
         // Set initial node to loaded in state with path cost = 0
-        currentNode = new Node(givenState, null, new ArrayList<Move>(), 0);
+        currentNode = new Node(newState, null, new ArrayList<Move>(), 0);
 
         // Perform goal test
         if (StateGeneration.checkPuzzleComplete(givenState)) {

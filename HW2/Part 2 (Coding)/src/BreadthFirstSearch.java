@@ -16,64 +16,80 @@ public class BreadthFirstSearch {
     }
 
     public static void breadthFirstProblem(State givenState) {
-        // Solve the sliding blocks puzzle using a breadth-first strategy
-        // Queue order is FIFO
+        // Solve problem via breadth-first search with a FIFO queue
 
-        // Initialize search and perform initial goal test
+        // Initialize node, explored, and frontier; perform initial goal test
         boolean goalReached = false;
         if (SearchGeneration.initializeSearch(givenState)) {
-            goalReached = true; // if initial goal test is positive
+            goalReached = true;
         }
 
-        // Loop through search until goal reached
+        // Loop through problem until goal reached
         while (!goalReached) {
 
-            // Check if frontier empty
+            // Check if frontier empty. If it is, exit
             if (SearchGeneration.frontier.isEmpty()) {
-                System.out.println("Execution halted. Frontier is empty.");
-                break; // if frontier empty, break out of loop
+                System.out.println("Frontier empty. Execution halted.");
+                break;
             }
 
-            // Choose shallowest node in frontier through "pop"
+            // Pop node from FIFO frontier and assign as current
             SearchGeneration.currentNode = SearchGeneration.fifoPop(SearchGeneration.frontier);
 
-            // Add node state to explored
-            SearchGeneration.explored.add(SearchGeneration.currentNode.currentState);
+            // Add current node state to explored set
+            SearchGeneration.explored.add(SearchGeneration.currentNode.getState());
 
-            // Iterate through all moves in the current node
+            // Loop through each possible action for the current node
+            System.out.println("possible moves " + MoveGeneration.allPossiblePieceMoves(SearchGeneration.currentNode.getState()).size());
+            for (Move currentMove : MoveGeneration.allPossiblePieceMoves(SearchGeneration.currentNode.getState())) {
+                System.out.println("(" + currentMove.getPieceNum() + ", " + currentMove.getMoveId() + ")");
+            }
+
             for (Move currentMove : SearchGeneration.currentNode.getState().getAllPossibleMoves()) {
+                System.out.println("current move: ");
+                System.out.println("(" + currentMove.getPieceNum() + ", " + currentMove.getMoveId() + ")");
 
-                // Initialize current child node
-                Node currentChildNode = SearchGeneration.childNode(SearchGeneration.currentNode, currentMove);
+                // Get the child node for the specified move
+                SearchGeneration.currentChildNode = SearchGeneration.childNode(SearchGeneration.currentNode,
+                        currentMove);
 
-                // Check if the state of child is not in explored
+                // Check if the child node is in explored
                 boolean inExploredFrontier = false;
-                for (State thisState : SearchGeneration.explored) {
-                    if (thisState.getPositions() == currentChildNode.getState().getPositions()) {
+                for (int i = 0; i < SearchGeneration.explored.size(); i++) {
+                    if (StateGeneration.compareStates(SearchGeneration.currentChildNode.getState(),
+                            SearchGeneration.explored.get(i))) {
                         inExploredFrontier = true;
-                        break;
+
+                        System.out.println("in explored");
                     }
                 }
 
-                // Also check if state of child is not in frontier
-                for (Node thisNode : SearchGeneration.frontier) {
-                    if (thisNode.getState().getPositions() == currentChildNode.getState().getPositions()) {
-                        inExploredFrontier = true;
+                // Check if child node is in frontier
+                if (!inExploredFrontier) {
+                    for (int i = 0; i < SearchGeneration.frontier.size(); i++) {
+                        if (StateGeneration.compareStates(SearchGeneration.currentChildNode.getState(),
+                                SearchGeneration.frontier.get(i).getState())) {
+                            inExploredFrontier = true;
+
+                            System.out.println("in frontier");
+                        }
                     }
                 }
 
-                // If not in explored or frontier see if goal reached. If not goal, add to frontier
+                // If not in explored or frontier, perform goal test on child node
                 if (!inExploredFrontier) {
 
-                    // Perform goal test on child state and return solution if goal reached
-                    if (StateGeneration.checkPuzzleComplete(currentChildNode.getState())) {
-                        SearchGeneration.printSolution(SearchGeneration.currentNode);
-                        goalReached =  true; // if goal reached, instruct search class to exit
+                    System.out.println("a");
+
+                    // If goal reached, print solution and exit
+                    if (StateGeneration.checkPuzzleComplete(SearchGeneration.currentChildNode.getState())) {
+                        SearchGeneration.printSolution(SearchGeneration.currentChildNode);
+                        goalReached = true;
                         break;
                     }
 
-                    // Insert child node into frontier
-                    SearchGeneration.frontier.add(currentChildNode);
+                    // Otherwise, add child node to the frontier
+                    SearchGeneration.frontier.add(SearchGeneration.currentChildNode);
                 }
             }
         }

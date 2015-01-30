@@ -38,9 +38,11 @@ public class MoveGeneration {
         // Update allPieces for every piece currently in game state
         ArrayList<Move> allPossibleMoves = new ArrayList<Move>();
         Piece[] currentPieces = currentState.getAllPieces();
+
         for (int i = 0; i < currentPieces.length; i++) {
             currentPieces[i].setPossibleMoves(new ArrayList<Character>()); // empty it first
             currentPieces[i].setPossibleMoves(possiblePieceMoves(currentState, currentPieces[i].getPieceNum()));
+
             for (char currentMoveId : currentPieces[i].getPossibleMoves()) {
                 allPossibleMoves.add(new Move(currentPieces[i].getPieceNum(), currentMoveId));
             }
@@ -74,7 +76,7 @@ public class MoveGeneration {
         Set<Character> possibleMovesSet = new HashSet<Character>();
 
         for (Character currentMove : possibleMovesArray) {
-            if (pieceLocations.size() > 1) {
+            if (pieceLocations.size() > 1 && ((currentMove == 'u') || (currentMove == 'd'))) {
                 // If more than one cell, we need to check
                 int numInstances = 0;
                 for (int i = 0; i < possibleMovesArray.size(); i++) {
