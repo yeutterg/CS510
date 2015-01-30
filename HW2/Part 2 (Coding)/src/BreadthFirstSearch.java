@@ -47,25 +47,23 @@ public class BreadthFirstSearch {
                 Node currentChildNode = SearchGeneration.childNode(SearchGeneration.currentNode, currentMove);
 
                 // Check if the state of child is not in explored
-                boolean inExplored = false;
+                boolean inExploredFrontier = false;
                 for (State thisState : SearchGeneration.explored) {
                     if (thisState.getPositions() == currentChildNode.getState().getPositions()) {
-                        inExplored = true;
+                        inExploredFrontier = true;
                         break;
                     }
                 }
 
                 // Also check if state of child is not in frontier
-                boolean inFrontier = false;
                 for (Node thisNode : SearchGeneration.frontier) {
                     if (thisNode.getState().getPositions() == currentChildNode.getState().getPositions()) {
-                        inFrontier = true;
-                        break;
+                        inExploredFrontier = true;
                     }
                 }
 
                 // If not in explored or frontier see if goal reached. If not goal, add to frontier
-                if (!inFrontier || !inExplored) {
+                if (!inExploredFrontier) {
 
                     // Perform goal test on child state and return solution if goal reached
                     if (StateGeneration.checkPuzzleComplete(currentChildNode.getState())) {
@@ -79,9 +77,5 @@ public class BreadthFirstSearch {
                 }
             }
         }
-
-
-
-
     }
 }

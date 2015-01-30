@@ -26,12 +26,18 @@ public class SearchGeneration {
         // Perform move and add to new state
         State newState = MoveGeneration.applyMoveCloning(parent.getState(), action);
 
+        // Normalize state
+        newState = StateGeneration.normalizeState(newState);
+
         // Return the child node
         return new Node(newState, parent, newAction, newPathCost);
     }
 
     public static boolean initializeSearch(State givenState) {
         // Set up a search problem
+
+        // Normalize State
+        givenState = StateGeneration.normalizeState(givenState);
 
         // Set initial node to loaded in state with path cost = 0
         currentNode = new Node(givenState, null, new ArrayList<Move>(), 0);
