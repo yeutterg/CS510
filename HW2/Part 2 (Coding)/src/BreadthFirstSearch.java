@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * CS510 Winter 2015
  * Greg Yeutter
@@ -7,9 +9,11 @@
 
 public class BreadthFirstSearch {
 
-    public static void main(String fileName) {
+    private static int[][] currentNodePositions;
+
+    public static void main(String[] args) {
         // Load in a state
-        State newState = StateGeneration.loadState(fileName);
+        State newState = StateGeneration.loadState(args[0]);
 
         // Execute breadth-first search (HW2 2.1)
         breadthFirstProblem(newState);
@@ -35,19 +39,13 @@ public class BreadthFirstSearch {
 
             // Pop node from FIFO frontier and assign as current
             SearchGeneration.currentNode = SearchGeneration.fifoPop(SearchGeneration.frontier);
+            currentNodePositions = SearchGeneration.currentNode.getState().getPositions();
 
             // Add current node state to explored set
-            SearchGeneration.explored.add(SearchGeneration.currentNode.getState());
+            SearchGeneration.explored.add(currentNodePositions);
 
-            // Loop through each possible action for the current node
-            System.out.println("possible moves " + MoveGeneration.allPossiblePieceMoves(SearchGeneration.currentNode.getState()).size());
-            for (Move currentMove : MoveGeneration.allPossiblePieceMoves(SearchGeneration.currentNode.getState())) {
-                System.out.println("(" + currentMove.getPieceNum() + ", " + currentMove.getMoveId() + ")");
-            }
-
+            // Iterate through all possible moves in current node/state
             for (Move currentMove : SearchGeneration.currentNode.getState().getAllPossibleMoves()) {
-                System.out.println("current move: ");
-                System.out.println("(" + currentMove.getPieceNum() + ", " + currentMove.getMoveId() + ")");
 
                 // Get the child node for the specified move
                 SearchGeneration.currentChildNode = SearchGeneration.childNode(SearchGeneration.currentNode,
@@ -56,22 +54,20 @@ public class BreadthFirstSearch {
                 // Check if the child node is in explored
                 boolean inExploredFrontier = false;
                 for (int i = 0; i < SearchGeneration.explored.size(); i++) {
-                    if (StateGeneration.compareStates(SearchGeneration.currentChildNode.getState(),
-                            SearchGeneration.explored.get(i))) {
+                    int [][] exploredPositions = SearchGeneration.explored.get(i);
+                    if (StateGeneration.compareStates(currentNodePositions, exploredPositions)) {
                         inExploredFrontier = true;
-
-                        System.out.println("in explored");
+                        break;
                     }
                 }
 
                 // Check if child node is in frontier
                 if (!inExploredFrontier) {
                     for (int i = 0; i < SearchGeneration.frontier.size(); i++) {
-                        if (StateGeneration.compareStates(SearchGeneration.currentChildNode.getState(),
-                                SearchGeneration.frontier.get(i).getState())) {
+                        int [][] frontierPositions = SearchGeneration.frontier.get(i).getState().getPositions();
+                        if (StateGeneration.compareStates(currentNodePositions, frontierPositions)) {
                             inExploredFrontier = true;
-
-                            System.out.println("in frontier");
+                            break;
                         }
                     }
                 }

@@ -11,11 +11,13 @@ public class SearchGeneration {
 
     public static Node currentNode;
     public static Node currentChildNode;
+    public static int[][] positions;
     public static ArrayList<Node> frontier;
-    public static ArrayList<State> explored;
+    public static ArrayList<int[][]> explored;
 
     public static Node childNode(Node parent, Move action) {
         // Given a parent node and a (legal) action, return the child node
+        // positions is a hack for now, fix later
 
         // Add to action
         ArrayList<Move> newAction = parent.getAction();
@@ -24,19 +26,11 @@ public class SearchGeneration {
         // Increment path cost
         int newPathCost = parent.getPathCost() + 1;
 
-        // debug
-        System.out.println("parent node:");
-        StateGeneration.displayState(parent.getState());
-
         // Perform move and add to new state
-        State newState = MoveGeneration.applyMoveCloning(parent.getState(), action);
+        State newState = new State(MoveGeneration.applyMoveCloning(new State(parent.getState()), action));
 
         // Normalize state
         newState = StateGeneration.normalizeState(newState);
-
-        //debug
-        System.out.println("Child node");
-        StateGeneration.displayState(newState);
 
         // Return the child node
         return new Node(newState, parent, newAction, newPathCost);
@@ -61,7 +55,7 @@ public class SearchGeneration {
         // Apply initial node to frontier, initialize empty explored set
         frontier = new ArrayList<Node>();
         frontier.add(currentNode);
-        explored = new ArrayList<State>();
+        explored = new ArrayList<int[][]>();
 
         return false;
     }

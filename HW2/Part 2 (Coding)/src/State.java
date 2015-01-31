@@ -22,6 +22,15 @@ public class State {
         this.allPieces = allPieces;
     }
 
+    public State(int[][] positions, int width, int height, Piece[] allPieces, ArrayList<Move> allPossibleMoves) {
+        this.positions = positions;
+        this.width = width;
+        this.height = height;
+        this.allPieces = allPieces;
+        this.allPossibleMoves = allPossibleMoves;
+    }
+
+
     public State(State givenState) {
         this.positions = givenState.getPositions();
         this.width = givenState.getWidth();
@@ -67,7 +76,7 @@ public class State {
     }
 
     public void setSinglePosition(int h, int w, int value) {
-        int[][] newPositions = getPositions();
+        int[][] newPositions = this.getPositions();
         newPositions[h][w] = value;
         this.positions = newPositions;
     }

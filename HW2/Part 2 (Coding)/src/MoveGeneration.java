@@ -213,7 +213,7 @@ public class MoveGeneration {
         // Clone input state, apply requested move to new state
 
         // Clone state
-        State newState = StateGeneration.cloneState(givenState);
+        State newState = new State(givenState);
 
         // Find index of piece in allPieces array
         int pieceNum = requestedMove.getPieceNum();
@@ -228,9 +228,9 @@ public class MoveGeneration {
 
         // Move piece over cell(s), fill old location with zeros
         ArrayList<int[]> originalLocations = currentPieceLocations(newState, pieceNum);
-        ArrayList<Character> possibleMoves = possiblePieceMoves(newState, pieceNum);
         int numRight = 0; // number of times moved right
         int hTrack = 0; // keep track of changes in height
+        int[][] positions = newState.getPositions();
 
         if (isMovePossible(newState, newState.getAllPieces()[arrayIndex], moveId)) {
             for (int[] location : originalLocations) {
@@ -245,30 +245,27 @@ public class MoveGeneration {
 
                 if (moveId == 'u') {
                     // Move up
-                    newState.setSinglePosition(h-1, w, pieceNum);
+                    positions[h-1][w] = pieceNum;
                 } else if (moveId == 'd') {
                     // Move down
-                    newState.setSinglePosition(h+1, w, pieceNum);
+                    positions[h+1][w] = pieceNum;
                 } else if (moveId == 'l') {
                     // Move left
-                    newState.setSinglePosition(h, w-1, pieceNum);
+                    positions[h][w-1] = pieceNum;
                 } else if (moveId == 'r') {
                     // Move right
-                    newState.setSinglePosition(h, w+1, pieceNum);
+                    positions[h][w+1] = pieceNum;
                     numRight++;
                 }
 
                 // empty moved from cell, unless we move right >1x
                 if (moveId != 'r' || numRight <= 1) {
-                    newState.setSinglePosition(h, w, 0); // Make moved from cell empty
+                    positions[h][w] = 0; // Make moved from cell empty
                 }
             }
         }
 
-        // Update list of possible piece moves in new state
-        newState.setPossibleMoves(allPossiblePieceMoves(newState));
-
-        return newState;
+        return new State(positions, newState.getWidth(), newState.getHeight(), newState.getAllPieces(), allPossiblePieceMoves(newState));
     }
 
     /*

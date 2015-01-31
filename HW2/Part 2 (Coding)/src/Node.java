@@ -20,6 +20,13 @@ public class Node {
         this.pathCost = pathCost;
     }
 
+    public Node(Node givenNode) {
+        this.currentState = givenNode.getState();
+        this.parent = givenNode.getParent();
+        this.action = givenNode.getAction();
+        this.pathCost = givenNode.getPathCost();
+    }
+
     public State getState() {
         return currentState;
     }

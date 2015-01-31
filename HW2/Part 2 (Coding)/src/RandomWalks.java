@@ -7,12 +7,20 @@
 
 public class RandomWalks {
 
-    public static void main(String fileName, int N) {
+    public static void main(String[] args) {
         // Load game state
-        StateGeneration.loadGameState(fileName);
+        StateGeneration.loadGameState(args[0]);
 
-        // Execute random walks (HW1, 2.F)
-        randomWalksProblem(StateGeneration.gameState, N);
+        if (args.length > 1) {
+            // Execute random walks (HW1, 2.F)
+            int N = Integer.parseInt(args[1]);
+            randomWalksProblem(StateGeneration.gameState, N);
+        } else {
+            // default size of N = 100
+            randomWalksProblem(StateGeneration.gameState, 100);
+        }
+
+
     }
 
     public static void randomWalksProblem(State givenState, int N) {
