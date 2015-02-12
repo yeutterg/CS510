@@ -17,14 +17,17 @@ public class MoveGeneration {
     public static Node applyMoveToNode(Node inputNode, Move requestedMove) {
         // Generate a new node by applying requested move
 
+        // Clone inputNode
+        Node newNode = NodeGeneration.cloneNode(inputNode);
+
         // Get state of input node
-        State inputState = inputNode.getState();
+        State inputState = StateGeneration.cloneState(newNode.getState());
 
         // Increment path cost
-        int newPathCost = inputNode.getPathCost() + 1;
+        int newPathCost = newNode.getPathCost() + 1;
 
         // Add requestedMove to list of actions
-        ArrayList<Move> newAction = inputNode.getAction();
+        ArrayList<Move> newAction = newNode.getAction();
         newAction.add(requestedMove);
 
         // Get new state with move applied

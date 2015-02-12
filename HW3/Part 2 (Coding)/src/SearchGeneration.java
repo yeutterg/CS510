@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * CS510 Winter 2015
@@ -32,7 +33,7 @@ public class SearchGeneration {
 
         // Apply initial node to frontier, initialize empty explored set
         frontier = new ArrayList<Node>();
-        frontier.add(currentNode);
+        frontier.add(NodeGeneration.cloneNode(currentNode));
         explored = new ArrayList<int[][]>();
 
         return false;
@@ -61,12 +62,12 @@ public class SearchGeneration {
 
     public static void lifoPop() {
         // Remove final value in frontier and assign to currentNode
-        currentNode = frontier.remove(frontier.size() - 1);
+        currentNode = NodeGeneration.cloneNode(frontier.remove(frontier.size() - 1));
     }
 
     public static void fifoPop() {
         // Remove first value in frontier and assign to currentNode
-        currentNode = frontier.remove(0);
+        currentNode = NodeGeneration.cloneNode(frontier.remove(0));
     }
 
     /*
@@ -74,7 +75,7 @@ public class SearchGeneration {
      */
 
     public static void addCurrentToExplored() {
-        explored.add(currentNode.getState().getPositions());
+        explored.add(StateGeneration.clonePositionArray(currentNode.getState().getPositions()));
     }
 
 }

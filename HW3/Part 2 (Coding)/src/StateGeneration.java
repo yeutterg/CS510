@@ -59,6 +59,17 @@ public class StateGeneration {
      * Load position arrays
      */
 
+    public static int[][] clonePositionArray(int[][] src) {
+        // Clone a position array
+
+        int length = src.length;
+        int[][] target = new int[length][src[0].length];
+        for (int i = 0; i < length; i++) {
+            System.arraycopy(src[i], 0, target[i], 0, src[i].length);
+        }
+        return target;
+    }
+
     public static int[][] loadPositions(String fileName) {
         // Load predefined positions from a text file and return it
 
@@ -164,21 +175,23 @@ public class StateGeneration {
     public static boolean isMovePossible(State inputState, int pieceNum, char moveId) {
         // Check if move possible in given state
 
-        if (inputState.getAllPossibleMoves().contains(new Move(pieceNum, moveId))) {
-            return true;
-        } else {
-            return false;
+        ArrayList<Move> allPossibleMoves = inputState.getAllPossibleMoves();
+        for (Move currentMove : allPossibleMoves) {
+            if ((pieceNum == currentMove.getPieceNum()) && (moveId == currentMove.getMoveId())) {
+                return true;
+            }
         }
+        return false;
     }
 
     public static ArrayList<Move> getAllPossibleMoves(int[][] positions, ArrayList<Integer> allPieces) {
         // Find all possible moves for all pieces in given positions array
 
         ArrayList<Move> moves = new ArrayList<Move>(0);
-        for (int piece : allPieces) {
-            ArrayList<Character> possiblePieceMoves = getPossiblePieceMoves(positions, piece);
-            for (char moveId : possiblePieceMoves) {
-                moves.add(new Move(piece, moveId));
+        for (int i = 0; i < allPieces.size(); i++) {
+            ArrayList<Character> possiblePieceMoves = getPossiblePieceMoves(positions, allPieces.get(i));
+            for (int j = 0; j < possiblePieceMoves.size(); j++) {
+                moves.add(new Move(allPieces.get(i), possiblePieceMoves.get(j)));
             }
         }
 
@@ -204,34 +217,7 @@ public class StateGeneration {
             possibleMovesArray.addAll(compareLocations(pieceLocations, negOneLocations));
         }
 
-        // Only add move to possible result set if all cells of piece can freely move up or down
-        // Set will prevent duplicates from being added
-        Set<Character> possibleMovesSet = new HashSet<Character>();
-
-        for (Character currentMove : possibleMovesArray) {
-            if (pieceLocations.size() > 1) {
-                // If more than one cell, we need to check
-                int numInstances = 0;
-                for (int i = 0; i < possibleMovesArray.size(); i++) {
-                    // Find all instances of the same character
-                    if (possibleMovesArray.get(i) == currentMove) {
-                        numInstances++;
-                    }
-                    // Only add to output set if number of instances = size of piece
-                    if (numInstances == pieceLocations.size()) {
-                        possibleMovesSet.add(currentMove);
-                    }
-                }
-            } else {
-                // Otherwise, we need to just add the value to the output set
-                possibleMovesSet.add(currentMove);
-            }
-        }
-
-        // Convert Set back to ArrayList
-        ArrayList<Character> possibleMovesFinal = new ArrayList<Character>(possibleMovesSet);
-
-        return possibleMovesFinal;
+        return possibleMovesArray;
     }
 
     public static ArrayList<Character> compareLocations(ArrayList<int[]> pieceLocations,
@@ -331,11 +317,14 @@ public class StateGeneration {
     public static boolean comparePositions(int[][] pos1, int[][] pos2) {
         // Compare two position matrices, return true if identical, false if not
 
-        if (pos1.equals(pos2)) {
-            return true;
-        } else {
-            return false;
+        for (int h = 0; h < pos1.length; h++) {
+            for (int w = 0; w < pos1[h].length; w++) {
+                if (pos1[h][w] != pos2[h][w]) {
+                    return false;
+                }
+            }
         }
+        return true;
     }
 
     public static boolean checkPuzzleComplete(State givenState) {

@@ -25,4 +25,9 @@ public class NodeGeneration {
 
         return new Node.Builder(nodeState).parent(parentNode).action(action).pathCost(pathCost).build();
     }
+
+    public static Node cloneNode(Node inputNode) {
+        return new Node.Builder(inputNode.getState()).action(inputNode.getAction()).pathCost(inputNode.getPathCost()).
+                parent(inputNode.getParent()).build();
+    }
 }
