@@ -16,19 +16,23 @@ public class Node {
     public static class Builder {
         // Required parameters
         private final State currentState;
-        private final ArrayList<Move> action;
 
         // Optional parameters initialized to default values
+        private ArrayList<Move> action = new ArrayList<Move>(0);
         private Node parent = null;
-        private int pathCost = 1;
+        private int pathCost = 0;
 
-        public Builder(State currentState, ArrayList<Move> action) {
+        public Builder(State currentState) {
             this.currentState = currentState;
-            this.action = action;
         }
 
         public Builder parent(Node assignedParent) {
             parent = assignedParent;
+            return this;
+        }
+
+        public Builder action(ArrayList<Move> moves) {
+            action = moves;
             return this;
         }
 

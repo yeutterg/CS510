@@ -12,7 +12,7 @@ public class State {
     private final int[][] positions;
     private final int width;
     private final int height;
-    private final Piece[] allPieces;
+    private final ArrayList<Integer> allPieces;
     private final ArrayList<Move> allPossibleMoves;
 
     public static class Builder {
@@ -22,7 +22,7 @@ public class State {
         // Optional parameters with default values
         private int width = 1;
         private int height = 1;
-        private Piece[] allPieces = null;
+        private ArrayList<Integer> allPieces = null;
         private ArrayList<Move> allPossibleMoves = new ArrayList<Move>(0);
 
         public Builder(int[][] positions) {
@@ -39,7 +39,7 @@ public class State {
             return this;
         }
 
-        public Builder allPieces(Piece[] input) {
+        public Builder allPieces(ArrayList<Integer> input) {
             allPieces = input;
             return this;
         }
@@ -61,7 +61,7 @@ public class State {
             return height;
         }
 
-        protected Piece[] getAllPieces() {
+        protected ArrayList<Integer> getAllPieces() {
             return allPieces;
         }
 
@@ -94,7 +94,7 @@ public class State {
         return height;
     }
 
-    public Piece[] getAllPieces() {
+    public ArrayList<Integer> getAllPieces() {
         return allPieces;
     }
 
