@@ -105,7 +105,8 @@ public class StateGeneration {
             i++;
         }
 
-        State newState = new State(positionArray, width, height, newPieces);
+        State.Builder newStateBuilder = new State.Builder(positionArray);
+        State newState = newStateBuilder.width(width).height(height).allPieces(newPieces).build();
 
         // Get all possible moves for state
         newState.setPossibleMoves(MoveGeneration.allPossiblePieceMoves(newState));
@@ -120,11 +121,14 @@ public class StateGeneration {
 
     public static void displayState(State givenState) {
         // Display given state in the console
+        int wDisp = givenState.getWidth();
+        int hDisp = givenState.getHeight();
+        int[][] pDisp = givenState.getPositions();
 
-        System.out.println(givenState.width + "," + givenState.height + ",");
-        for (int h = 0; h < givenState.height; h++) {
-            for (int w = 0; w < givenState.width; w++) {
-                System.out.print(givenState.positions[h][w] + ",");
+        System.out.println(wDisp + "," + hDisp + ",");
+        for (int h = 0; h < hDisp; h++) {
+            for (int w = 0; w < wDisp; w++) {
+                System.out.print(pDisp[h][w] + ",");
             }
             System.out.print("\n");
         }
@@ -137,6 +141,7 @@ public class StateGeneration {
 
     public static State cloneState(State givenState) {
         // Clone the given state and return it
+        State.Builder newStateBuilder = new State.Builder(givenState);
         return new State(givenState);
     }
 
@@ -192,34 +197,36 @@ public class StateGeneration {
      * State normalization: make sure states are equivalent even if int values different
      */
 
-    public static State normalizeState(State givenState) {
+    public static int[][] normalizeState(int wVal, int hVal, int[][] pos) {
         // Normalize state
 
         int nextIdx = 3;
-        for (int h = 0; h < givenState.getHeight(); h++) {
-            for (int w = 0; w < givenState.getWidth(); w++) {
-                if (givenState.getPositions()[h][w] == nextIdx) {
+        for (int h = 0; h < hVal; h++) {
+            for (int w = 0; w < wVal; w++) {
+                if (pos[h][w] == nextIdx) {
                     nextIdx++;
-                } else if (givenState.getPositions()[h][w] > nextIdx) {
-                    swapIdx(givenState, nextIdx, givenState.getPositions()[h][w]);
+                } else if (pos[h][w] > nextIdx) {
+                    pos = swapIdx(nextIdx, pos[h][w], wVal, hVal, pos);
                     nextIdx++;
                 }
             }
         }
-        return givenState;
+        return pos;
     }
 
-    public static void swapIdx(State givenState, int idx1, int idx2) {
+    public static int[][] swapIdx(int idx1, int idx2, int wVal, int hVal, int[][] pos) {
         // Swap values to aid in normalizing state
 
-        for (int h = 0; h < givenState.getHeight(); h++) {
-            for (int w = 0; w < givenState.getWidth(); w++) {
-                if (givenState.getPositions()[h][w] == idx1) {
-                    givenState.setSinglePosition(h, w, idx2);
-                } else if (givenState.getPositions()[h][w] == idx2) {
-                    givenState.setSinglePosition(h, w, idx1);
+        for (int h = 0; h < hVal; h++) {
+            for (int w = 0; w < wVal; w++) {
+                if (pos[h][w] == idx1) {
+                    pos[h][w] = idx2;
+                } else if (pos[h][w] == idx2) {
+                    pos[h][w] = idx1;
                 }
             }
         }
+
+        return pos;
     }
 }

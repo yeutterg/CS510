@@ -49,6 +49,26 @@ public class State {
             return this;
         }
 
+        protected int[][] getPositions() {
+            return positions;
+        }
+
+        protected int getWidth() {
+            return width;
+        }
+
+        protected int getHeight() {
+            return height;
+        }
+
+        protected Piece[] getAllPieces() {
+            return allPieces;
+        }
+
+        protected ArrayList<Move> getAllPossibleMoves() {
+            return allPossibleMoves;
+        }
+
         public State build() {
             return new State(this);
         }
@@ -60,5 +80,25 @@ public class State {
         height = builder.height;
         allPieces = builder.allPieces;
         allPossibleMoves = builder.allPossibleMoves;
+    }
+
+    public int[][] getPositions() {
+        return positions;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Piece[] getAllPieces() {
+        return allPieces;
+    }
+
+    public ArrayList<Move> getAllPossibleMoves() {
+        return allPossibleMoves;
     }
 }

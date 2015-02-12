@@ -37,6 +37,22 @@ public class Node {
             return this;
         }
 
+        protected State getState() {
+            return currentState;
+        }
+
+        protected Node getParent() {
+            return parent;
+        }
+
+        protected ArrayList<Move> getAction() {
+            return action;
+        }
+
+        protected int getPathCost() {
+            return pathCost;
+        }
+
         public Node build() {
             return new Node(this);
         }
@@ -47,5 +63,21 @@ public class Node {
         parent = builder.parent;
         action = builder.action;
         pathCost = builder.pathCost;
+    }
+
+    public State getState() {
+        return currentState;
+    }
+
+    public Node getParent() {
+        return parent;
+    }
+
+    public ArrayList<Move> getAction() {
+        return action;
+    }
+
+    public int getPathCost() {
+        return pathCost;
     }
 }

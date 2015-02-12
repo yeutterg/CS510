@@ -40,7 +40,7 @@ public class SearchGeneration {
         // Set up a search problem
 
         // Normalize State
-        State newState = new State(givenState);
+        State.Builder newStateBuilder = new State.Builder(givenState);
         newState = StateGeneration.normalizeState(givenState);
 
         // Set initial node to loaded in state with path cost = 0
