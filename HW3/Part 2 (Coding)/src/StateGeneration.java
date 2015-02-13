@@ -196,6 +196,8 @@ public class StateGeneration {
     public static ArrayList<Character> getPossiblePieceMoves(int[][] positions, int pieceNum) {
         // Return all possible moves for a piece given a game state
 
+        System.out.println("piece: " + pieceNum);
+
         // initialize possible moves array
         ArrayList<Character> possibleMovesArray = new ArrayList<Character>();
 
@@ -215,7 +217,7 @@ public class StateGeneration {
         return possibleMovesArray;
     }
 
-    public static ArrayList<Character> compareLocations(List<int[]> pieceLocations, List<int[]> targetLocations) {
+    public static List<Character> compareLocations(List<int[]> pieceLocations, List<int[]> targetLocations) {
         // Compare two states and output possible moves (i.e. it is possible for
         // piece to move to target)
 
@@ -228,6 +230,7 @@ public class StateGeneration {
         }
         int pHeight = hP.size();
         int pWidth = wP.size();
+        System.out.println("pH: " + pHeight + " , pW: " + pWidth);
 
         // determine height and width of target
         Set<Integer> hT = new HashSet<Integer>();
@@ -238,6 +241,7 @@ public class StateGeneration {
         }
         int tHeight = hT.size();
         int tWidth = wT.size();
+        System.out.println("tH: " + tHeight + " , tW: " + tWidth);
 
         // check if adjacent horizontally and vertically
         boolean hAdj = false;
@@ -247,10 +251,10 @@ public class StateGeneration {
             int incrW = 0;
             for (int[] p : pieceLocations) {
                 for (int[] t : targetLocations) {
-                    if((p[1] != t[1]) && ((Math.abs(p[0]) - Math.abs(t[0])) == 0)) {
+                    if((p[1] != t[1]) && (p[0] == t[0])) {
                         incrH++;
                     }
-                    if((p[0] != t[0]) && ((Math.abs(p[1]) - Math.abs(t[1])) == 0)) {
+                    if((p[0] != t[0]) && (p[1] == t[1])) {
                         incrW++;
                     }
                 }
@@ -265,7 +269,7 @@ public class StateGeneration {
 
 
         // determine if it is possible for piece to move u,d,l,r
-        ArrayList<Character> possibleMoves = new ArrayList<Character>();
+        List<Character> possibleMoves = new ArrayList<Character>();
 
         for (int[] cellPiece : pieceLocations) {
             int wPiece = cellPiece[1];
@@ -288,10 +292,28 @@ public class StateGeneration {
                     possibleMoves.add('u');
                 }
             }
-
         }
 
-        return possibleMoves;
+        // make sure legal moves are actually adjacent by comparing occurrence to width/height
+        int u = 0;
+        int d = 0;
+        int l = 0;
+        int r = 0;
+        for (int i = 0; i < possibleMoves.size(); i++) {
+            char currentVal = possibleMoves.get(i);
+            if (currentVal == 'u') {u++;}
+            else if (currentVal == 'd') {d++;}
+            else if (currentVal == 'l') {l++;}
+            else if (currentVal == 'r') {r++;}
+        }
+
+        List<Character> finalMoves = new ArrayList<Character>();
+        if (u == pWidth) {finalMoves.add('u');}
+        if (d == pWidth) {finalMoves.add('d');}
+        if (l == pHeight) {finalMoves.add('l');}
+        if (r == pHeight) {finalMoves.add('r');}
+
+        return finalMoves;
     }
 
     /*
