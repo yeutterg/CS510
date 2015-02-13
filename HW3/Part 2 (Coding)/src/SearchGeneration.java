@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * CS510 Winter 2015
@@ -11,7 +13,7 @@ import java.util.List;
 public class SearchGeneration {
 
     public static List<Node> frontier = new ArrayList<Node>();
-    public static List<int[][]> explored = new ArrayList<int[][]>();
+    public static Set<int[][]> explored = new HashSet<int[][]>();
     public static Node currentNode;
     public static Node childNode;
 
@@ -60,12 +62,12 @@ public class SearchGeneration {
 
     public static void lifoPop() {
         // Remove final value in frontier and assign to currentNode
-        currentNode = new Node(frontier.remove(frontier.size() - 1));
+        currentNode = frontier.remove(frontier.size() - 1);
     }
 
     public static void fifoPop() {
         // Remove first value in frontier and assign to currentNode
-        currentNode = new Node(frontier.remove(0));
+        currentNode = frontier.remove(0);
     }
 
     /*

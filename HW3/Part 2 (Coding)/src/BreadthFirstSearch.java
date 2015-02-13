@@ -16,10 +16,6 @@ public class BreadthFirstSearch {
         // Loop through search until goal reached
         while (!goalReached) {
 
-            // debug
-            System.out.println("parent node");
-            StateGeneration.displayState(SearchGeneration.currentNode.getState());
-
             // Check if frontier empty. If it is, exit.
             if (SearchGeneration.frontier.isEmpty()) {
                 System.out.println("Frontier empty. Execution halted.");
@@ -28,6 +24,10 @@ public class BreadthFirstSearch {
 
             // Pop node from frontier (FIFO) and assign as currentNode
             SearchGeneration.fifoPop();
+
+            // debug
+            System.out.println("parent node");
+            StateGeneration.displayState(SearchGeneration.currentNode.getState());
 
             // Add the positions of currentNode to explored
             SearchGeneration.addCurrentToExplored();
@@ -50,6 +50,10 @@ public class BreadthFirstSearch {
                 // debug
                 System.out.println("child node");
                 StateGeneration.displayState(SearchGeneration.childNode.getState());
+                System.out.println("possible child actions:");
+                for (Move act : SearchGeneration.childNode.getState().getAllPossibleMoves()) {
+                    System.out.println(act.getPieceNum() + "," + act.getMoveId());
+                }
 
                 // Check if positions array of child node in frontier or explored
                 boolean inFrontierExplored = false;
@@ -92,6 +96,13 @@ public class BreadthFirstSearch {
 
                     // If goal not reached, add the child node to the frontier
                     SearchGeneration.frontier.add(SearchGeneration.childNode);
+                    System.out.println("child node added to frontier.");
+
+                    // debug
+                    System.out.println("current frontier size: " + SearchGeneration.frontier.size());
+                    for (Node n : SearchGeneration.frontier) {
+                        StateGeneration.displayState(n.getState());
+                    }
 
                 }
             }

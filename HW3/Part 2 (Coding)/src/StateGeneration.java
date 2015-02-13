@@ -219,6 +219,52 @@ public class StateGeneration {
         // Compare two states and output possible moves (i.e. it is possible for
         // piece to move to target)
 
+        // determine height and width of piece
+        Set<Integer> hP = new HashSet<Integer>();
+        Set<Integer> wP = new HashSet<Integer>();
+        for(int[] piece : pieceLocations) {
+            hP.add(piece[0]);
+            wP.add(piece[1]);
+        }
+        int pHeight = hP.size();
+        int pWidth = wP.size();
+
+        // determine height and width of target
+        Set<Integer> hT = new HashSet<Integer>();
+        Set<Integer> wT = new HashSet<Integer>();
+        for(int[] piece : targetLocations) {
+            hT.add(piece[0]);
+            wT.add(piece[1]);
+        }
+        int tHeight = hT.size();
+        int tWidth = wT.size();
+
+        // check if adjacent horizontally and vertically
+        boolean hAdj = false;
+        boolean wAdj = false;
+        if (pHeight <= tHeight) {
+            int incrH = 0;
+            int incrW = 0;
+            for (int[] p : pieceLocations) {
+                for (int[] t : targetLocations) {
+                    if((p[1] != t[1]) && ((Math.abs(p[0]) - Math.abs(t[0])) == 0)) {
+                        incrH++;
+                    }
+                    if((p[0] != t[0]) && ((Math.abs(p[1]) - Math.abs(t[1])) == 0)) {
+                        incrW++;
+                    }
+                }
+            }
+            if (incrH <= pHeight) {
+                hAdj = true;
+            }
+            if(incrW <= pWidth) {
+                wAdj = true;
+            }
+        }
+
+
+        // determine if it is possible for piece to move u,d,l,r
         ArrayList<Character> possibleMoves = new ArrayList<Character>();
 
         for (int[] cellPiece : pieceLocations) {
@@ -228,16 +274,16 @@ public class StateGeneration {
                 int wTarget = cellTarget[1];
                 int hTarget = cellTarget[0];
 
-                if ((wTarget == (wPiece + 1)) && (hTarget == hPiece)) {
+                if ((wTarget == (wPiece + 1)) && (hTarget == hPiece) && (wAdj)) {
                     // Possible to move right
                     possibleMoves.add('r');
-                } else if ((wTarget == (wPiece - 1)) && (hTarget == hPiece)) {
+                } else if ((wTarget == (wPiece - 1)) && (hTarget == hPiece) && (wAdj)) {
                     // Possible to move left
                     possibleMoves.add('l');
-                } else if ((hTarget == (hPiece + 1)) && (wTarget == wPiece)) {
+                } else if ((hTarget == (hPiece + 1)) && (wTarget == wPiece) && (hAdj)) {
                     // Possible to move down
                     possibleMoves.add('d');
-                } else if ((hTarget == (hPiece - 1)) && (wTarget == wPiece)) {
+                } else if ((hTarget == (hPiece - 1)) && (wTarget == wPiece) && (hAdj)) {
                     // Possible to move up
                     possibleMoves.add('u');
                 }
