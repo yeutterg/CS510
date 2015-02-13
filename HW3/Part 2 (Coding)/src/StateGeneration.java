@@ -239,31 +239,6 @@ public class StateGeneration {
         int tHeight = hT.size();
         int tWidth = wT.size();
 
-        // check if adjacent horizontally and vertically
-        boolean hAdj = false;
-        boolean wAdj = false;
-        if (pHeight <= tHeight) {
-            int incrH = 0;
-            int incrW = 0;
-            for (int[] p : pieceLocations) {
-                for (int[] t : targetLocations) {
-                    if((p[1] != t[1]) && (p[0] == t[0])) {
-                        incrH++;
-                    }
-                    if((p[0] != t[0]) && (p[1] == t[1])) {
-                        incrW++;
-                    }
-                }
-            }
-            if (incrH <= pHeight) {
-                hAdj = true;
-            }
-            if(incrW <= pWidth) {
-                wAdj = true;
-            }
-        }
-
-
         // determine if it is possible for piece to move u,d,l,r
         List<Character> possibleMoves = new ArrayList<Character>();
 
@@ -274,16 +249,16 @@ public class StateGeneration {
                 int wTarget = cellTarget[1];
                 int hTarget = cellTarget[0];
 
-                if ((wTarget == (wPiece + 1)) && (hTarget == hPiece) && (wAdj)) {
+                if ((wTarget == (wPiece + 1)) && (hTarget == hPiece)) {
                     // Possible to move right
                     possibleMoves.add('r');
-                } else if ((wTarget == (wPiece - 1)) && (hTarget == hPiece) && (wAdj)) {
+                } else if ((wTarget == (wPiece - 1)) && (hTarget == hPiece)) {
                     // Possible to move left
                     possibleMoves.add('l');
-                } else if ((hTarget == (hPiece + 1)) && (wTarget == wPiece) && (hAdj)) {
+                } else if ((hTarget == (hPiece + 1)) && (wTarget == wPiece)) {
                     // Possible to move down
                     possibleMoves.add('d');
-                } else if ((hTarget == (hPiece - 1)) && (wTarget == wPiece) && (hAdj)) {
+                } else if ((hTarget == (hPiece - 1)) && (wTarget == wPiece)) {
                     // Possible to move up
                     possibleMoves.add('u');
                 }
