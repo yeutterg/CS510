@@ -8,22 +8,22 @@
 public class RandomWalks {
 
     public static void main(String[] args) {
-        // Load game state
-        StateGeneration.loadGameState(args[0]);
 
+        // input file
+        String inFile = args[0];
+
+        // See if N (depth limit) was defined
         if (args.length > 1) {
             // Execute random walks (HW1, 2.F)
             int N = Integer.parseInt(args[1]);
-            randomWalksProblem(StateGeneration.gameState, N);
+            randomWalksProblem(inFile, N);
         } else {
             // default size of N = 100
-            randomWalksProblem(StateGeneration.gameState, 100);
+            randomWalksProblem(inFile, 100);
         }
-
-
     }
 
-    public static void randomWalksProblem(State givenState, int N) {
+    public static void randomWalksProblem(String inFile, int N) {
         /*
 		 * Given a state and positive integer N:
 		 * 1. Generate all possible moves in the board
@@ -34,33 +34,36 @@ public class RandomWalks {
 		 * 6. Otherwise, go back to 1
 		 */
 
-        // Print initial game state
-        StateGeneration.displayGameState();
+        // Initialize game state
+        State gameState = StateGeneration.loadInitialState(inFile);
+        int w = gameState.getWidth();
+        int h = gameState.getHeight();
+
+        // Print initial state
+        StateGeneration.displayState(gameState);
 
         for (int i = 0; i < N; i++) {
 
             // Select a random (possible) move
-            Move selectedMove = MoveGeneration.generateRandomMove(givenState);
+            Move thisMove = MoveGeneration.generateRandomMove(gameState);
 
             // Print the selected move
-            System.out.println("\n(" + selectedMove.getPieceNum() + ", " + selectedMove.getMoveId() + ")\n");
+            System.out.println("\n(" + thisMove.getPieceNum() + ", " + thisMove.getMoveId() + ")\n");
 
             // Apply the selected move
-            MoveGeneration.applyMove(givenState, selectedMove);
+            gameState = MoveGeneration.applyMoveToState(gameState, thisMove);
 
             // Normalize the resulting game state
-            StateGeneration.gameState = StateGeneration.normalizeState(StateGeneration.gameState);
+            gameState.setPositions(StateGeneration.normalizeState(w, h, gameState.getPositions()));
 
             // Print the current game state
-            StateGeneration.displayGameState();
+            StateGeneration.displayState(gameState);
 
             // Check if goal reached
-            if (StateGeneration.checkPuzzleComplete(StateGeneration.gameState)) {
+            if (StateGeneration.checkPuzzleComplete(gameState)) {
                 System.out.println("\nGoal reached.");
                 break;
             }
         }
-
-        System.out.println("\nGame terminated.");
     }
 }
