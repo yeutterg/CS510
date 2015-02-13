@@ -13,6 +13,8 @@ public class Node {
     private Node parent;
     private List<Move> action;
     private int pathCost;
+    private int heuristic;
+    private int costFn;
 
     public State getCurrentState() {
         return currentState;
@@ -22,8 +24,17 @@ public class Node {
         return currentState;
     }
 
+    public int getHeuristic() {
+        return heuristic;
+    }
+
+    public int getCostFn() {
+        return costFn;
+    }
+
     public Node getParent() {
         return parent;
+
     }
 
     public List<Move> getAction() {
@@ -50,11 +61,30 @@ public class Node {
         this.pathCost = pathCost;
     }
 
+    public void setHeuristic(int heuristic) {
+        this.heuristic = heuristic;
+    }
+
+    public void setCostFn(int costFn) {
+        this.costFn = costFn;
+    }
+
     public Node(State currentState, Node parent, List<Move> action, int pathCost) {
         this.currentState = currentState;
         this.parent = parent;
         this.action = action;
         this.pathCost = pathCost;
+        this.heuristic = 0;
+        this.costFn = 0;
+    }
+
+    public Node(State currentState, Node parent, List<Move> action, int pathCost, int heuristic, int costFn) {
+        this.currentState = currentState;
+        this.parent = parent;
+        this.action = action;
+        this.pathCost = pathCost;
+        this.heuristic = heuristic;
+        this.costFn = costFn;
     }
 
     public Node(State currentState) {
@@ -62,6 +92,8 @@ public class Node {
         this.parent = null;
         this.action = new ArrayList<Move>(0);
         this.pathCost = 0;
+        this.heuristic = 0;
+        this.costFn = 0;
     }
 
     public Node(Node oldNode) {
@@ -69,5 +101,8 @@ public class Node {
         this.parent = oldNode.parent;
         this.action = new ArrayList<Move>(oldNode.action);
         this.pathCost = oldNode.pathCost;
+        this.heuristic = oldNode.heuristic;
+        this.costFn = oldNode.costFn;
+
     }
 }

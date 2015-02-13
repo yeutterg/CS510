@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * CS510 Winter 2015
@@ -70,12 +67,62 @@ public class SearchGeneration {
         currentNode = frontier.remove(0);
     }
 
+    public static void lowFPop() {
+        // Remove the node with the lowest cost function from the frontier and assign it to currentNode
+
+        // Find node in frontier with lowest cost function
+        int index = 0;
+        for (int i = 0; i < frontier.size(); i++) {
+            if (frontier.get(i).getCostFn() < index) {
+                index = i;
+            }
+        }
+
+        // Remove node from frontier and assign to currentNode
+        currentNode = frontier.remove(0);
+    }
+
     /*
      * Handle explored List
      */
 
     public static void addCurrentToExplored() {
+        // Add position array of current node to the explored list
         explored.add(StateGeneration.clonePositionArray(currentNode.getState().getPositions()));
+    }
+
+    /*
+     * Heuristic functions
+     */
+
+    public static void computeManhattanHeuristicCost(Node inputNode) {
+        // Compute the Manhattan Distance Heuristic and Total Cost for the given node
+        inputNode.setHeuristic(manhattanDistance(inputNode.getState()));
+        inputNode.setCostFn(inputNode.getPathCost() + inputNode.getHeuristic());
+    }
+
+
+    public static int manhattanDistance(State inputState) {
+        // Compute the Manhattan/Grid distance heuristic given a state
+        // If piece or goal have more than one position, we take the lowest value
+
+        // Compute all possible distances
+        int[][] pos = inputState.getPositions();
+        List<Integer> dist = new ArrayList<Integer>();
+        for (int[] twoLoc : StateGeneration.currentPieceLocations(pos, 2)) {
+            for (int[] goalLoc : StateGeneration.currentPieceLocations(pos, -1)) {
+                dist.add(Math.abs(goalLoc[0] - twoLoc[0]) + Math.abs(goalLoc[1] - twoLoc[1]));
+            }
+        }
+
+        try {
+            // Find lowest value in dist and return it
+            int minIndex = dist.indexOf(Collections.min(dist));
+            return dist.get(minIndex);
+        } catch (java.util.NoSuchElementException e) {
+            // If there is a NoSuchElementException, we probably reached the goal
+            return 0;
+        }
     }
 
 }
