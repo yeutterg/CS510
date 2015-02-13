@@ -16,19 +16,16 @@ public class NodeGeneration {
 
     public static Node loadInitialNode(String fileName) {
         // Load, build, and return initial game node
-
         State initState = StateGeneration.loadInitialState(fileName);
-        return new Node.Builder(initState).build();
+        return new Node(initState);
     }
 
     public static Node generateNewNode(State nodeState, Node parentNode, List<Move> action, int pathCost) {
         // Generate a new node
-
-        return new Node.Builder(nodeState).parent(parentNode).action(action).pathCost(pathCost).build();
+        return new Node(nodeState, parentNode, action, pathCost);
     }
 
     public static Node cloneNode(Node inputNode) {
-        return new Node.Builder(inputNode.getState()).action(inputNode.getAction()).pathCost(inputNode.getPathCost()).
-                parent(inputNode.getParent()).build();
+        return new Node(inputNode);
     }
 }

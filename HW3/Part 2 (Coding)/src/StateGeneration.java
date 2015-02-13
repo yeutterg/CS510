@@ -41,15 +41,12 @@ public class StateGeneration {
         List<Move> possibleMoves = getAllPossibleMoves(pos, allPieces);
 
         // Build and return new state
-        return new State.Builder(pos).allPieces(allPieces).allPossibleMoves(possibleMoves)
-                .width(w).height(h).build();
+        return new State(pos, w, h, allPieces, possibleMoves);
     }
 
     public static State cloneState(State inputState) {
         // Clone a state
-        return new State.Builder(inputState.getPositions()).allPieces(inputState.getAllPieces())
-                .allPossibleMoves(inputState.getAllPossibleMoves()).width(inputState.getWidth())
-                .height(inputState.getHeight()).build();
+        return new State(inputState);
     }
 
     /*
@@ -59,12 +56,13 @@ public class StateGeneration {
     public static int[][] clonePositionArray(int[][] src) {
         // Clone a position array
 
-        int length = src.length;
-        int[][] target = new int[length][src[0].length];
-        for (int i = 0; i < length; i++) {
-            System.arraycopy(src[i], 0, target[i], 0, src[i].length);
+        int[][] out = new int[height][width];
+        for (int i = 0; i < src.length; i++) {
+            for (int j = 0; j < src[i].length; j++) {
+                out[i][j] = src[i][j];
+            }
         }
-        return target;
+        return out;
     }
 
     public static int[][] loadPositions(String fileName) {

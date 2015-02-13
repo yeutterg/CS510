@@ -5,69 +5,17 @@ import java.util.List;
  * CS510 Winter 2015
  * Greg Yeutter
  * gwy23@drexel.edu
- * Node.java: Builder for a search node
+ * Node.java: Constructor for a search node
  */
 
 public class Node {
-    private final State currentState;
-    private final Node parent;
-    private final List<Move> action;
-    private final int pathCost;
+    private State currentState;
+    private Node parent;
+    private List<Move> action;
+    private int pathCost;
 
-    public static class Builder {
-        // Required parameters
-        private final State currentState;
-
-        // Optional parameters initialized to default values
-        private List<Move> action = new ArrayList<Move>(0);
-        private Node parent = null;
-        private int pathCost = 0;
-
-        public Builder(State currentState) {
-            this.currentState = currentState;
-        }
-
-        public Builder parent(Node assignedParent) {
-            parent = assignedParent;
-            return this;
-        }
-
-        public Builder action(List<Move> moves) {
-            action = moves;
-            return this;
-        }
-
-        public Builder pathCost(int val) {
-            pathCost = val;
-            return this;
-        }
-
-        protected State getState() {
-            return currentState;
-        }
-
-        protected Node getParent() {
-            return parent;
-        }
-
-        protected List<Move> getAction() {
-            return action;
-        }
-
-        protected int getPathCost() {
-            return pathCost;
-        }
-
-        public Node build() {
-            return new Node(this);
-        }
-    }
-
-    private Node(Builder builder) {
-        currentState = StateGeneration.cloneState(builder.currentState);
-        parent = builder.parent;
-        action = builder.action;
-        pathCost = builder.pathCost;
+    public State getCurrentState() {
+        return currentState;
     }
 
     public State getState() {
@@ -84,5 +32,42 @@ public class Node {
 
     public int getPathCost() {
         return pathCost;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
+
+    public void setAction(List<Move> action) {
+        this.action = action;
+    }
+
+    public void setPathCost(int pathCost) {
+        this.pathCost = pathCost;
+    }
+
+    public Node(State currentState, Node parent, List<Move> action, int pathCost) {
+        this.currentState = currentState;
+        this.parent = parent;
+        this.action = action;
+        this.pathCost = pathCost;
+    }
+
+    public Node(State currentState) {
+        this.currentState = currentState;
+        this.parent = null;
+        this.action = new ArrayList<Move>(0);
+        this.pathCost = 0;
+    }
+
+    public Node(Node oldNode) {
+        this.currentState = new State(oldNode.currentState);
+        this.parent = oldNode.parent;
+        this.action = oldNode.action;
+        this.pathCost = oldNode.pathCost;
     }
 }

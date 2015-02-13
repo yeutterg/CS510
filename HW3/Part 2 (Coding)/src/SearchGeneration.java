@@ -60,12 +60,12 @@ public class SearchGeneration {
 
     public static void lifoPop() {
         // Remove final value in frontier and assign to currentNode
-        currentNode = NodeGeneration.cloneNode(frontier.remove(frontier.size() - 1));
+        currentNode = new Node(frontier.remove(frontier.size() - 1));
     }
 
     public static void fifoPop() {
         // Remove first value in frontier and assign to currentNode
-        currentNode = NodeGeneration.cloneNode(frontier.remove(0));
+        currentNode = new Node(frontier.remove(0));
     }
 
     /*
