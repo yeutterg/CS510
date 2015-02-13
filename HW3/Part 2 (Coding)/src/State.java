@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * CS510 Winter 2015
@@ -12,8 +13,8 @@ public class State {
     private final int[][] positions;
     private final int width;
     private final int height;
-    private final ArrayList<Integer> allPieces;
-    private final ArrayList<Move> allPossibleMoves;
+    private final List<Integer> allPieces;
+    private final List<Move> allPossibleMoves;
 
     public static class Builder {
         // Required parameter
@@ -22,8 +23,8 @@ public class State {
         // Optional parameters with default values
         private int width = 1;
         private int height = 1;
-        private ArrayList<Integer> allPieces = null;
-        private ArrayList<Move> allPossibleMoves = new ArrayList<Move>(0);
+        private List<Integer> allPieces = null;
+        private List<Move> allPossibleMoves = new ArrayList<Move>(0);
 
         public Builder(int[][] positions) {
             this.positions = positions;
@@ -39,12 +40,12 @@ public class State {
             return this;
         }
 
-        public Builder allPieces(ArrayList<Integer> input) {
+        public Builder allPieces(List<Integer> input) {
             allPieces = input;
             return this;
         }
 
-        public Builder allPossibleMoves(ArrayList<Move> moves) {
+        public Builder allPossibleMoves(List<Move> moves) {
             allPossibleMoves = moves;
             return this;
         }
@@ -61,11 +62,11 @@ public class State {
             return height;
         }
 
-        protected ArrayList<Integer> getAllPieces() {
+        protected List<Integer> getAllPieces() {
             return allPieces;
         }
 
-        protected ArrayList<Move> getAllPossibleMoves() {
+        protected List<Move> getAllPossibleMoves() {
             return allPossibleMoves;
         }
 
@@ -94,11 +95,11 @@ public class State {
         return height;
     }
 
-    public ArrayList<Integer> getAllPieces() {
+    public List<Integer> getAllPieces() {
         return allPieces;
     }
 
-    public ArrayList<Move> getAllPossibleMoves() {
+    public List<Move> getAllPossibleMoves() {
         return allPossibleMoves;
     }
 }

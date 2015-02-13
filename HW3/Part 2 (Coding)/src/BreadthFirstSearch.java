@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * CS510 Winter 2015
@@ -39,12 +39,12 @@ public class BreadthFirstSearch {
             }
 
             // Iterate through all possible actions for the current node
-            ArrayList<Move> actions = SearchGeneration.currentNode.getState().getAllPossibleMoves();
+            List<Move> actions = SearchGeneration.currentNode.getState().getAllPossibleMoves();
             for (Move action : actions) {
 
                 // Generate a child node with action applied
-                SearchGeneration.childNode = MoveGeneration.applyMoveToNode(
-                        NodeGeneration.cloneNode(SearchGeneration.currentNode), action);
+                SearchGeneration.childNode = NodeGeneration.cloneNode(MoveGeneration.applyMoveToNode(
+                        SearchGeneration.currentNode, action));
                 int[][] childPos = SearchGeneration.childNode.getState().getPositions();
 
                 // debug
@@ -92,7 +92,7 @@ public class BreadthFirstSearch {
 
                     // If goal not reached, add the child node to the frontier
                     SearchGeneration.frontier.add(SearchGeneration.childNode);
-                    System.out.println("added child to frontier");
+
                 }
             }
         }

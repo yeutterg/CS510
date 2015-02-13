@@ -1,9 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * CS510 Winter 2015
@@ -38,10 +35,10 @@ public class StateGeneration {
         pos = normalizeState(w, h, pos);
 
         // Get all pieces in positions array
-        ArrayList<Integer> allPieces = getAllPieces(pos);
+        List<Integer> allPieces = getAllPieces(pos);
 
         // Get all possible moves for each piece in positions array
-        ArrayList<Move> possibleMoves = getAllPossibleMoves(pos, allPieces);
+        List<Move> possibleMoves = getAllPossibleMoves(pos, allPieces);
 
         // Build and return new state
         return new State.Builder(pos).allPieces(allPieces).allPossibleMoves(possibleMoves)
@@ -74,7 +71,7 @@ public class StateGeneration {
         // Load predefined positions from a text file and return it
 
         // Initialize scanner and input array, input file
-        ArrayList<Integer> rawInput = new ArrayList<Integer>();
+        List<Integer> rawInput = new ArrayList<Integer>();
         try {
             // Scan in file
             // sc = scanner for lines within file
@@ -102,7 +99,7 @@ public class StateGeneration {
         return parseInputToPositions(rawInput); // pass ArrayList to be parsed
     }
 
-    public static int[][] parseInputToPositions(ArrayList<Integer> input) {
+    public static int[][] parseInputToPositions(List<Integer> input) {
         // Parse ArrayList input to the integer matrix gameState
 
         // Populate gameState with values
@@ -175,7 +172,7 @@ public class StateGeneration {
     public static boolean isMovePossible(State inputState, int pieceNum, char moveId) {
         // Check if move possible in given state
 
-        ArrayList<Move> allPossibleMoves = inputState.getAllPossibleMoves();
+        List<Move> allPossibleMoves = inputState.getAllPossibleMoves();
         for (Move currentMove : allPossibleMoves) {
             if ((pieceNum == currentMove.getPieceNum()) && (moveId == currentMove.getMoveId())) {
                 return true;
@@ -184,7 +181,7 @@ public class StateGeneration {
         return false;
     }
 
-    public static ArrayList<Move> getAllPossibleMoves(int[][] positions, ArrayList<Integer> allPieces) {
+    public static List<Move> getAllPossibleMoves(int[][] positions, List<Integer> allPieces) {
         // Find all possible moves for all pieces in given positions array
 
         ArrayList<Move> moves = new ArrayList<Move>(0);
@@ -220,8 +217,7 @@ public class StateGeneration {
         return possibleMovesArray;
     }
 
-    public static ArrayList<Character> compareLocations(ArrayList<int[]> pieceLocations,
-                                                        ArrayList<int[]> targetLocations) {
+    public static ArrayList<Character> compareLocations(List<int[]> pieceLocations, List<int[]> targetLocations) {
         // Compare two states and output possible moves (i.e. it is possible for
         // piece to move to target)
 

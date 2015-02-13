@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * CS510 Winter 2015
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 public class Node {
     private final State currentState;
     private final Node parent;
-    private final ArrayList<Move> action;
+    private final List<Move> action;
     private final int pathCost;
 
     public static class Builder {
@@ -18,7 +19,7 @@ public class Node {
         private final State currentState;
 
         // Optional parameters initialized to default values
-        private ArrayList<Move> action = new ArrayList<Move>(0);
+        private List<Move> action = new ArrayList<Move>(0);
         private Node parent = null;
         private int pathCost = 0;
 
@@ -31,7 +32,7 @@ public class Node {
             return this;
         }
 
-        public Builder action(ArrayList<Move> moves) {
+        public Builder action(List<Move> moves) {
             action = moves;
             return this;
         }
@@ -49,7 +50,7 @@ public class Node {
             return parent;
         }
 
-        protected ArrayList<Move> getAction() {
+        protected List<Move> getAction() {
             return action;
         }
 
@@ -63,7 +64,7 @@ public class Node {
     }
 
     private Node(Builder builder) {
-        currentState = builder.currentState;
+        currentState = StateGeneration.cloneState(builder.currentState);
         parent = builder.parent;
         action = builder.action;
         pathCost = builder.pathCost;
@@ -77,7 +78,7 @@ public class Node {
         return parent;
     }
 
-    public ArrayList<Move> getAction() {
+    public List<Move> getAction() {
         return action;
     }
 

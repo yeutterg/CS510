@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * CS510 Winter 2015
@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 public class SearchGeneration {
 
-    public static ArrayList<Node> frontier;
-    public static ArrayList<int[][]> explored;
+    public static List<Node> frontier = new ArrayList<Node>();
+    public static List<int[][]> explored = new ArrayList<int[][]>();
     public static Node currentNode;
     public static Node childNode;
 
@@ -31,10 +31,8 @@ public class SearchGeneration {
             return true; // if goal reached, instruct search class to exit
         }
 
-        // Apply initial node to frontier, initialize empty explored set
-        frontier = new ArrayList<Node>();
+        // Apply initial node to frontier
         frontier.add(NodeGeneration.cloneNode(currentNode));
-        explored = new ArrayList<int[][]>();
 
         return false;
     }
@@ -71,7 +69,7 @@ public class SearchGeneration {
     }
 
     /*
-     * Handled explored ArrayList
+     * Handle explored List
      */
 
     public static void addCurrentToExplored() {

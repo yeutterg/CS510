@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -27,7 +28,7 @@ public class MoveGeneration {
         int newPathCost = newNode.getPathCost() + 1;
 
         // Add requestedMove to list of actions
-        ArrayList<Move> newAction = newNode.getAction();
+        List<Move> newAction = newNode.getAction();
         newAction.add(requestedMove);
 
         // Get new state with move applied
@@ -113,7 +114,7 @@ public class MoveGeneration {
         // Find all possible moves in board, and pick one at random
 
         // Update all possible moves in board and get an ArrayList of them
-        ArrayList<Move> allPossibleMoves = StateGeneration.getAllPossibleMoves(inputState.getPositions(),
+        List<Move> allPossibleMoves = StateGeneration.getAllPossibleMoves(inputState.getPositions(),
                 inputState.getAllPieces());
 
         // Pick a random index and return the move

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * CS510 Winter 2015
@@ -20,7 +21,7 @@ public class NodeGeneration {
         return new Node.Builder(initState).build();
     }
 
-    public static Node generateNewNode(State nodeState, Node parentNode, ArrayList<Move> action, int pathCost) {
+    public static Node generateNewNode(State nodeState, Node parentNode, List<Move> action, int pathCost) {
         // Generate a new node
 
         return new Node.Builder(nodeState).parent(parentNode).action(action).pathCost(pathCost).build();
