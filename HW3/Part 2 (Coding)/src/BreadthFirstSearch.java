@@ -25,18 +25,8 @@ public class BreadthFirstSearch {
             // Pop node from frontier (FIFO) and assign as currentNode
             SearchGeneration.fifoPop();
 
-            // debug
-            System.out.println("parent node");
-            StateGeneration.displayState(SearchGeneration.currentNode.getState());
-
             // Add the positions of currentNode to explored
             SearchGeneration.addCurrentToExplored();
-
-            // debug
-            System.out.println("possible parent actions:");
-            for (Move act : SearchGeneration.currentNode.getState().getAllPossibleMoves()) {
-                System.out.println(act.getPieceNum() + "," + act.getMoveId());
-            }
 
             // Iterate through all possible actions for the current node
             List<Move> actions = SearchGeneration.currentNode.getState().getAllPossibleMoves();
@@ -47,38 +37,20 @@ public class BreadthFirstSearch {
                         SearchGeneration.currentNode, action));
                 int[][] childPos = SearchGeneration.childNode.getState().getPositions();
 
-                // debug
-                System.out.println("child node");
-                StateGeneration.displayState(SearchGeneration.childNode.getState());
-                System.out.println("possible child actions:");
-                for (Move act : SearchGeneration.childNode.getState().getAllPossibleMoves()) {
-                    System.out.println(act.getPieceNum() + "," + act.getMoveId());
-                }
-
                 // Check if positions array of child node in frontier or explored
                 boolean inFrontierExplored = false;
 
                 for (Node thisNode : SearchGeneration.frontier) {
                     if (StateGeneration.comparePositions(childPos, thisNode.getState().getPositions())) {
                         inFrontierExplored = true;
-                        System.out.println("in frontier");
                         break;
                     }
                 }
 
                 if (!inFrontierExplored) {
                     for (int[][] pos : SearchGeneration.explored) {
-                        System.out.println("explored:");
-                        for (int h = 0; h < StateGeneration.height; h++) {
-                            for (int w = 0; w < StateGeneration.width; w++) {
-                                System.out.print(pos[h][w] + ",");
-                            }
-                            System.out.print("\n");
-                        }
-
                         if (StateGeneration.comparePositions(childPos, pos)) {
                             inFrontierExplored = true;
-                            System.out.println("in explored");
                             break;
                         }
                     }
@@ -96,17 +68,8 @@ public class BreadthFirstSearch {
 
                     // If goal not reached, add the child node to the frontier
                     SearchGeneration.frontier.add(SearchGeneration.childNode);
-                    System.out.println("child node added to frontier.");
-
-                    // debug
-                    System.out.println("current frontier size: " + SearchGeneration.frontier.size());
-                    for (Node n : SearchGeneration.frontier) {
-                        StateGeneration.displayState(n.getState());
-                    }
-
                 }
             }
         }
-        System.out.println("Search terminated.");
     }
 }

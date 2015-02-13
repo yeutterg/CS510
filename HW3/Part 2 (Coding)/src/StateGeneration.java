@@ -196,8 +196,6 @@ public class StateGeneration {
     public static ArrayList<Character> getPossiblePieceMoves(int[][] positions, int pieceNum) {
         // Return all possible moves for a piece given a game state
 
-        System.out.println("piece: " + pieceNum);
-
         // initialize possible moves array
         ArrayList<Character> possibleMovesArray = new ArrayList<Character>();
 
@@ -230,7 +228,6 @@ public class StateGeneration {
         }
         int pHeight = hP.size();
         int pWidth = wP.size();
-        System.out.println("pH: " + pHeight + " , pW: " + pWidth);
 
         // determine height and width of target
         Set<Integer> hT = new HashSet<Integer>();
@@ -241,7 +238,6 @@ public class StateGeneration {
         }
         int tHeight = hT.size();
         int tWidth = wT.size();
-        System.out.println("tH: " + tHeight + " , tW: " + tWidth);
 
         // check if adjacent horizontally and vertically
         boolean hAdj = false;
@@ -307,6 +303,7 @@ public class StateGeneration {
             else if (currentVal == 'r') {r++;}
         }
 
+        // add truly legal moves to final moves list and return
         List<Character> finalMoves = new ArrayList<Character>();
         if (u == pWidth) {finalMoves.add('u');}
         if (d == pWidth) {finalMoves.add('d');}

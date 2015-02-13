@@ -67,7 +67,7 @@ public class Node {
     public Node(Node oldNode) {
         this.currentState = new State(oldNode.currentState);
         this.parent = oldNode.parent;
-        this.action = oldNode.action;
+        this.action = new ArrayList<Move>(oldNode.action);
         this.pathCost = oldNode.pathCost;
     }
 }
