@@ -4,7 +4,7 @@ import java.util.List;
 /**
  * CS510 Winter 2015
  * Greg Yeutter
- * OthelloPlayerYeutter.java: Othello player implementing the standard minimax algorithm
+ * OthelloPlayerYeutter.java: Othello player implementing the standard minimax algorithm, with specified depth limit
  */
 
 public class OthelloPlayerYeutter extends OthelloPlayer {
