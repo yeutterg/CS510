@@ -59,22 +59,17 @@ public class OthelloPlayerYeutter extends OthelloPlayer {
             scores.add(minValue(state.applyMoveCloning(m), 0));
         }
 
-        // Last move
-        if (scores.size() == 1 && scores.get(0) == null) {
-            return moves.get(0);
-        }
-
         // Find the score index with the arg max value
         Double argMaxVal = Double.NEGATIVE_INFINITY;
+        System.out.println("Scores:");
         for (Double s : scores) {
-            System.out.println("Scores:");
             if (s == null) {
                 continue;
             }
             System.out.println(s);
             argMaxVal = Math.max(argMaxVal, s);
         }
-        System.out.println(argMaxVal);
+        System.out.println("argmax: " + argMaxVal);
         int indexVal = scores.indexOf(argMaxVal);
 
         // Return the move with the arg max value
@@ -91,22 +86,17 @@ public class OthelloPlayerYeutter extends OthelloPlayer {
             scores.add(maxValue(state.applyMoveCloning(m), 0));
         }
 
-        // Last move
-        if (scores.size() == 1 && scores.get(0) == null) {
-            return moves.get(0);
-        }
-
         // Find the score index with the arg min value
         Double argMinVal = Double.POSITIVE_INFINITY;
+        System.out.println("Scores:");
         for (Double s : scores) {
-            System.out.println("Scores:");
             if (s == null) {
                 continue;
             }
             System.out.println(s);
             argMinVal = Math.min(argMinVal, s);
         }
-        System.out.println(argMinVal);
+        System.out.println("argmin: " + argMinVal);
         int indexVal = scores.indexOf(argMinVal);
 
         // Return the move with the arg max value
@@ -122,16 +112,13 @@ public class OthelloPlayerYeutter extends OthelloPlayer {
 
         // Perform goal test and depth limit test
         if (moves.isEmpty() || depth >= depthLimit) {
-            return null;
+            return (double) state.score();
         }
 
         // Find the max value and return it
         Double value = Double.NEGATIVE_INFINITY;
         for (OthelloMove m : moves) {
             Double minVal = minValue(state.applyMoveCloning(m), depth + 1);
-            if (minVal == null) {
-                return value;
-            }
             value = Math.max(value, minVal);
         }
         return value;
@@ -146,16 +133,13 @@ public class OthelloPlayerYeutter extends OthelloPlayer {
 
         // Perform goal test
         if (moves.isEmpty() || depth >= depthLimit) {
-            return null;
+            return (double) state.score();
         }
 
         // Find the min value and return it
         Double value = Double.POSITIVE_INFINITY;
         for (OthelloMove m : moves) {
             Double maxVal = maxValue(state.applyMoveCloning(m), depth + 1);
-            if (maxVal == null) {
-                return value;
-            }
             value = Math.min(value, maxVal);
         }
         return value;

@@ -9,7 +9,7 @@ public class Test {
         // Create the game state with the initial position for an 8x8 board:
         OthelloState state = new OthelloState(8);
         OthelloPlayer players[] = {new OthelloRandomPlayer(),
-                                   new OthelloPlayerYeutter(4)};
+                                   new OthelloPlayerYeutter(3)};
         
         do{
             // Display the current state in the console:
