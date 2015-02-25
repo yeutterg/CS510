@@ -32,11 +32,12 @@ public class OthelloPlayerYeutter extends OthelloPlayer {
         // Generate possible moves for current state
         List<OthelloMove> moves = state.generateMoves();
 
-        // Perform goal test
+        // Pass if no possible moves
         if (moves.isEmpty()) {
             return null;
         }
 
+        // Decide if player is maximizing or minimizing
         if (state.nextPlayerToMove == 0) {
             // maximizing
             return maxDecision(state, moves);
