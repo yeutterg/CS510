@@ -6,9 +6,11 @@ import java.util.List;
  * Greg Yeutter
  * OthelloABPlayer.java: Othello player implementing the alpha-beta pruning, with specified depth limit
  */
+
 public class OthelloABPlayer extends OthelloPlayer{
 
     static int depthLimit;
+    static int explored;
 
     /*
      * Initialize player and set the depth limit
@@ -92,6 +94,7 @@ public class OthelloABPlayer extends OthelloPlayer{
             if (value >= beta) {
                 return value;
             }
+            explored++;
             alpha = Math.max(alpha, value);
         }
         return value;
@@ -117,6 +120,7 @@ public class OthelloABPlayer extends OthelloPlayer{
             if (value <= alpha) {
                 return value;
             }
+            explored++;
             beta = Math.min(beta, value);
         }
         return value;
