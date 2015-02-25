@@ -37,7 +37,7 @@
             <file leaf-file-name="OthelloState.java" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/OthelloState.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state vertical-scroll-proportion="2.5565133" vertical-offset="408" max-vertical-offset="3400">
+                  <state vertical-scroll-proportion="0.69061303" vertical-offset="2356" max-vertical-offset="3400">
                     <caret line="183" column="7" selection-start-line="183" selection-start-column="7" selection-end-line="183" selection-end-column="7" />
                     <folding>
                       <element signature="imports" expanded="true" />
@@ -105,11 +105,11 @@
       <file leaf-file-name="OthelloPlayerYeutter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/OthelloPlayerYeutter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6703601" vertical-offset="944" max-vertical-offset="2567">
-              <caret line="86" column="9" selection-start-line="86" selection-start-column="9" selection-end-line="86" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.33333334" vertical-offset="85" max-vertical-offset="2346">
+              <caret line="18" column="28" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2477#2485#0" expanded="true" />
+                <element signature="e#2189#2197#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -119,7 +119,7 @@
         <entry file="file://$PROJECT_DIR$/src/Test.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="612">
-              <caret line="11" column="61" selection-start-line="11" selection-start-column="61" selection-end-line="11" selection-end-column="61" />
+              <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -429,7 +429,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25880113" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31493816" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28210527" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
@@ -533,7 +533,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2477#2485#0" expanded="true" />
+            <element signature="e#2189#2197#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -589,7 +589,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2477#2485#0" expanded="true" />
+            <element signature="e#2189#2197#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -647,7 +647,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2477#2485#0" expanded="true" />
+            <element signature="e#2189#2197#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -708,7 +708,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/OthelloState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.5565133" vertical-offset="408" max-vertical-offset="3400">
+        <state vertical-scroll-proportion="0.69061303" vertical-offset="2356" max-vertical-offset="3400">
           <caret line="183" column="7" selection-start-line="183" selection-start-column="7" selection-end-line="183" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -727,18 +727,18 @@
     <entry file="file://$PROJECT_DIR$/src/Test.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="612">
-          <caret line="11" column="61" selection-start-line="11" selection-start-column="61" selection-end-line="11" selection-end-column="61" />
+          <caret line="9" column="47" selection-start-line="9" selection-start-column="47" selection-end-line="9" selection-end-column="47" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/OthelloPlayerYeutter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6703601" vertical-offset="944" max-vertical-offset="2567">
-          <caret line="86" column="9" selection-start-line="86" selection-start-column="9" selection-end-line="86" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="85" max-vertical-offset="2346">
+          <caret line="18" column="28" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2477#2485#0" expanded="true" />
+            <element signature="e#2189#2197#0" expanded="true" />
           </folding>
         </state>
       </provider>

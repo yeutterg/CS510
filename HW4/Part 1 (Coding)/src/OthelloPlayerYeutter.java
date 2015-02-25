@@ -15,6 +15,10 @@ public class OthelloPlayerYeutter extends OthelloPlayer {
      * Initialize player and set the depth limit
      */
     public OthelloPlayerYeutter(int maxDepth) {
+        if (maxDepth < 1) {
+            System.out.println("Error: Depth limit must be >= 1.");
+            System.exit(-1);
+        }
         depthLimit = maxDepth;
     }
 
@@ -28,11 +32,6 @@ public class OthelloPlayerYeutter extends OthelloPlayer {
         // Generate possible moves for current state
         List<OthelloMove> moves = state.generateMoves();
 
-        System.out.println("possible:");
-        for (OthelloMove m : moves) {
-            System.out.println(m.toString());
-        }
-
         // Perform goal test
         if (moves.isEmpty()) {
             return null;
@@ -40,11 +39,9 @@ public class OthelloPlayerYeutter extends OthelloPlayer {
 
         if (state.nextPlayerToMove == 0) {
             // maximizing
-            System.out.println("maximizing");
             return maxDecision(state, moves);
         } else {
             // minimizing
-            System.out.println("minimizing");
             return minDecision(state, moves);
         }
     }
@@ -61,15 +58,9 @@ public class OthelloPlayerYeutter extends OthelloPlayer {
 
         // Find the score index with the arg max value
         Double argMaxVal = Double.NEGATIVE_INFINITY;
-        System.out.println("Scores:");
         for (Double s : scores) {
-            if (s == null) {
-                continue;
-            }
-            System.out.println(s);
             argMaxVal = Math.max(argMaxVal, s);
         }
-        System.out.println("argmax: " + argMaxVal);
         int indexVal = scores.indexOf(argMaxVal);
 
         // Return the move with the arg max value
@@ -88,15 +79,9 @@ public class OthelloPlayerYeutter extends OthelloPlayer {
 
         // Find the score index with the arg min value
         Double argMinVal = Double.POSITIVE_INFINITY;
-        System.out.println("Scores:");
         for (Double s : scores) {
-            if (s == null) {
-                continue;
-            }
-            System.out.println(s);
             argMinVal = Math.min(argMinVal, s);
         }
-        System.out.println("argmin: " + argMinVal);
         int indexVal = scores.indexOf(argMinVal);
 
         // Return the move with the arg max value
