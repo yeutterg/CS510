@@ -9,7 +9,7 @@ public class Test {
         // Create the game state with the initial position for an 8x8 board:
         OthelloState state = new OthelloState(8);
         OthelloPlayer players[] = {new OthelloRandomPlayer(),
-                                   new OthelloIDPlayer(50)};
+                                   new OthelloIDPlayer(200)};
         
         do{
             // Display the current state in the console:
@@ -24,8 +24,9 @@ public class Test {
 
         // Show the result of the game:
         System.out.println("\nFinal state with score: " + state.score());
-        //System.out.println("AB Explored: " + OthelloABPlayer.explored);
-        //System.out.println("Minimax Explored: " + OthelloGYPlayer.explored);
+        System.out.println("AB Explored: " + OthelloABPlayer.explored);
+        System.out.println("Minimax Explored: " + OthelloGYPlayer.explored);
+        System.out.println("Iterative deepening explored: " + OthelloIDPlayer.explored);
         System.out.println(state);
     }    
     

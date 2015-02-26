@@ -89,6 +89,7 @@ public class OthelloIDPlayer extends OthelloPlayer{
         }
 
         // Return the last computed move before the deadline
+        System.out.println("Depth limit: " + currentDepthLimit);
         return resultingMove;
     }
 
