@@ -90,6 +90,147 @@ public class OthelloState {
             }
         return score;
     }
+
+    /*
+     * Updated evaluation function (HW5)
+     */
+    public int evaluation() {
+        // Set bonus value
+        int bonus = 10;
+
+        // Count number of pieces for each player for baseline score
+        int score = score();
+
+        // Corner bonus - Bonus points for player occupying stable corners
+        if (board[0][0] == PLAYER1) score += bonus; // nw
+        if (board[0][boardSize-1] == PLAYER1) score += bonus; // sw
+        if (board[boardSize-1][0] == PLAYER1) score += bonus; // ne
+        if (board[boardSize-1][boardSize-1] == PLAYER1) score += bonus; // se
+        if (board[0][0] == PLAYER2) score -= bonus; // nw
+        if (board[0][boardSize-1] == PLAYER2) score -= bonus; // sw
+        if (board[boardSize-1][0] == PLAYER2) score -= bonus; // ne
+        if (board[boardSize-1][boardSize-1] == PLAYER2) score -= bonus; // se
+
+        // C/X Penalty - Negative points for occupying unstable squares adjacent to corners
+        // (c- and x-squares), unless stable corner also occupied (then add additional bonus points)
+        // Northwest
+        if (board[0][1]==PLAYER1 || board[1][0]==PLAYER1 || board[1][1]==PLAYER1) {
+            if (board[0][0]!= PLAYER1) score -= bonus;
+            if (board[0][0]==PLAYER1) score += bonus;
+        }
+        if (board[0][1]==PLAYER2 || board[1][0]==PLAYER2 || board[1][1]==PLAYER2) {
+            if (board[0][0]!= PLAYER2) score += bonus;
+            if (board[0][0]==PLAYER2) score -= bonus;
+        }
+        // Southwest
+        if (board[0][boardSize-2]==PLAYER1 || board[1][boardSize-1]==PLAYER1 || board[1][boardSize-2]==PLAYER1) {
+            if (board[0][boardSize-1]!= PLAYER1) score -= bonus;
+            if (board[0][boardSize-1]==PLAYER1) score += bonus;
+        }
+        if (board[0][boardSize-2]==PLAYER2 || board[1][boardSize-1]==PLAYER2 || board[1][boardSize-2]==PLAYER2) {
+            if (board[0][boardSize-1]!= PLAYER2) score += bonus;
+            if (board[0][boardSize-1]==PLAYER2) score -= bonus;
+        }
+        // Northeast
+        if (board[boardSize-2][0]==PLAYER1 || board[boardSize-1][1]==PLAYER1 || board[boardSize-2][1]==PLAYER1) {
+            if (board[boardSize-1][0]!= PLAYER1) score -= bonus;
+            if (board[boardSize-1][0]==PLAYER1) score += bonus;
+        }
+        if (board[boardSize-2][0]==PLAYER2 || board[boardSize-1][1]==PLAYER2 || board[boardSize-2][1]==PLAYER2) {
+            if (board[boardSize-1][0]!= PLAYER2) score += bonus;
+            if (board[boardSize-1][0]==PLAYER2) score -= bonus;
+        }
+        // Southeast
+        if (board[boardSize-2][boardSize-2]==PLAYER1 || board[boardSize-1][boardSize-2]==PLAYER1 ||
+                board[boardSize-2][boardSize-1]==PLAYER1) {
+            if (board[boardSize-1][boardSize-1]!= PLAYER1) score -= bonus;
+            if (board[boardSize-1][boardSize-1]==PLAYER1) score += bonus;
+        }
+        if (board[boardSize-2][boardSize-2]==PLAYER2 || board[boardSize-1][boardSize-2]==PLAYER2 ||
+                board[boardSize-2][boardSize-1]==PLAYER2) {
+            if (board[boardSize-1][boardSize-1]!= PLAYER2) score += bonus;
+            if (board[boardSize-1][boardSize-1]==PLAYER2) score -= bonus;
+        }
+
+        // Frontier minimization bonus - Player with least # of positions along frontier
+        // (>0 adjacent cells empty) gets bonus
+        int posFrontier = 0;
+        int negFrontier = 0;
+        for(int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                if (board[i][j] == PLAYER1) {
+                    if (board[i - 1][j - 1] == NOTHING ||
+                            board[i][j - 1] == NOTHING ||
+                            board[i + 1][j - 1] == NOTHING ||
+                            board[i - 1][j] == NOTHING ||
+                            board[i + 1][j] == NOTHING ||
+                            board[i - 1][j + 1] == NOTHING ||
+                            board[i][j + 1] == NOTHING ||
+                            board[i + 1][j + 1] == NOTHING)
+                        posFrontier++;
+                }
+                if (board[i][j] == PLAYER2)
+                    if (board[i - 1][j - 1] == NOTHING ||
+                            board[i][j - 1] == NOTHING ||
+                            board[i + 1][j - 1] == NOTHING ||
+                            board[i - 1][j] == NOTHING ||
+                            board[i + 1][j] == NOTHING ||
+                            board[i - 1][j + 1] == NOTHING ||
+                            board[i][j + 1] == NOTHING ||
+                            board[i + 1][j + 1] == NOTHING)
+                        negFrontier++;
+            }
+        }
+        if (posFrontier > negFrontier) score -= bonus;
+        else if (negFrontier > posFrontier) score += bonus;
+
+
+        // Edge creep bonus - for each edge a player controls (>= half board size),
+        // it gets a bonus. Do not award if both players occupy equal # of positions.
+        // North edge
+        int pos = 0;
+        int neg = 0;
+        for (int i = 0; i < boardSize; i++) {
+            if (board[i][0] == PLAYER1) pos++;
+            if (board[i][0] == PLAYER2) neg++;
+        }
+        if (pos != neg) {
+            if (pos >= boardSize/2) score += bonus;
+            if (neg >= boardSize/2) score -= bonus;
+        }
+        // South edge
+        pos = 0; neg = 0;
+        for (int i = 0; i < boardSize; i++) {
+            if (board[i][boardSize-1] == PLAYER1) pos++;
+            if (board[i][boardSize-1] == PLAYER2) neg++;
+        }
+        if (pos != neg) {
+            if (pos >= boardSize/2) score += bonus;
+            if (neg >= boardSize/2) score -= bonus;
+        }
+        // West edge
+        pos = 0; neg = 0;
+        for (int j = 0; j < boardSize; j++) {
+            if (board[0][j] == PLAYER1) pos++;
+            if (board[0][j] == PLAYER2) neg++;
+        }
+        if (pos != neg) {
+            if (pos >= boardSize/2) score += bonus;
+            if (neg >= boardSize/2) score -= bonus;
+        }
+        // East edge
+        pos = 0; neg = 0;
+        for (int j = 0; j < boardSize; j++) {
+            if (board[boardSize-1][j] == PLAYER1) pos++;
+            if (board[boardSize-1][j] == PLAYER2) neg++;
+        }
+        if (pos != neg) {
+            if (pos >= boardSize/2) score += bonus;
+            if (neg >= boardSize/2) score -= bonus;
+        }
+
+        return score;
+    }
     
     
     /*
