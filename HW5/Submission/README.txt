@@ -28,9 +28,9 @@ function, which tallies the total quantity of each player. The following strateg
 implemented to form the OthelloState.evaluation() function:
 
     i. Corner bonus
-	ii. C/X penalty
-	iii. Frontier minimization bonus
-	iv. Edge creep bonus
+    ii. C/X penalty
+    iii. Frontier minimization bonus
+    iv. Edge creep bonus
 	
 An example 8x8 Othello Board is given to explain positions:
 
