@@ -13,6 +13,7 @@ public class OthelloMCPlayer extends OthelloPlayer {
 
     static int iterationsLimit;
     static int explored;
+    static List<OthelloNode> tree; // TODO define the actual tree
 
     /*
      * Initialize player and set the depth limit
@@ -30,50 +31,59 @@ public class OthelloMCPlayer extends OthelloPlayer {
      */
     @Override
     public OthelloMove getMove(OthelloState state) {
-        // Player 0/O is maximizing, Player 1/X is minimizing
-
         OthelloNode root = createNode(state);
 
         for (int i = 0; i < iterationsLimit; i++) {
-
+            OthelloNode node = treePolicy(root);
+            if (node != null) {
+                OthelloNode node2 = defaultPolicy(node);
+                int node2Score = score(node2);
+                backup(node, node2Score);
+            }
         }
 
-        return bestChild(root);
-
-        // Generate possible moves for current state
-        List<OthelloMove> moves = state.generateMoves();
-
-        // Pass if no possible moves
-        if (moves.isEmpty()) {
-            return null;
-        }
-
-
+        return bestChild(root).getActions().get(0);
     }
 
     /*
      * Create a game tree node from the given state
      */
     private static OthelloNode createNode(OthelloState state) {
-
+        return new OthelloNode(null, state, 1, new ArrayList<OthelloMove>());
     }
 
     /*
      * Return the child with the max or min average score, depending on whether the player
      * is minimizing or maximizing
      */
-    private static OthelloMove bestChild(OthelloNode node) {
+    private static OthelloNode bestChild(OthelloNode node) {
         OthelloState state = node.getState();
         List<OthelloNode> children = node.getChildren();
+        int index = 0;
 
         // Decide if player is maximizing or minimizing
         if (state.nextPlayerToMove == 0) {
-            // return child with max score
-            return maxDecision(state, moves);
+            // find child with max score
+            Double maxScore = Double.NEGATIVE_INFINITY;
+            for (int i = 0; i < children.size(); i++) {
+                OthelloNode n = children.get(i);
+                if (n.getAvgScore() > maxScore) {
+                    maxScore = n.getAvgScore();
+                    index = i;
+                }
+            }
         } else {
-            // return child with min score
-            return minDecision(state, moves);
+            // find child with min score
+            Double minScore = Double.POSITIVE_INFINITY;
+            for (int i = 0; i < children.size(); i++) {
+                OthelloNode n = children.get(i);
+                if (n.getAvgScore() < minScore) {
+                    minScore = n.getAvgScore();
+                    index = i;
+                }
+            }
         }
+        return children.get(index);
     }
 
     /*
@@ -81,7 +91,23 @@ public class OthelloMCPlayer extends OthelloPlayer {
      * if all children already in tree, implement epsilon-greedy strategy
      */
     private static OthelloNode treePolicy(OthelloNode node) {
+        List<OthelloNode> children = node.getChildren();
 
+        // If node is terminal (no children), return it
+        if (children.isEmpty()) return node;
+
+        // Check if any children not in the tree, add the first one encountered
+        for (OthelloNode n : children)
+            if (!tree.contains(n)) return new OthelloNode(node, n.getState(), 1, n.getActions());
+
+        // If node not terminal but all children in tree, implement epsilon-greedy strategy
+        // 10% of the time return a random child, 90% of the time return the best child
+        OthelloNode nodeTmp;
+        Random r = new Random();
+        float chance = r.nextFloat();
+        if (chance <= 0.10f) nodeTmp = children.get(r.nextInt(children.size()));
+        else nodeTmp = bestChild(node);
+        return treePolicy(nodeTmp);
     }
 
     /*
@@ -89,20 +115,23 @@ public class OthelloMCPlayer extends OthelloPlayer {
      */
     private static OthelloNode defaultPolicy(OthelloNode node) {
         OthelloState state = node.getState();
-        Random r = new Random;
+        Random r = new Random();
 
-        // Generate moves
-        List<OthelloMove> moves = state.generateMoves();
+        while (!node.getChildren().isEmpty()) {
+            // Generate moves
+            List<OthelloMove> moves = state.generateMoves();
 
-        // select one at random
-        OthelloMove move;
-        if (!moves.isEmpty()) move = moves.get(r.nextInt(moves.size()));
-        else move = null;
+            // select one at random
+            OthelloMove move;
+            if (!moves.isEmpty()) move = moves.get(r.nextInt(moves.size()));
+            else move = null;
 
-        // apply move to generate new state, node
-        OthelloState newState = state.applyMoveCloning(move);
-        // TODO finish this
+            // apply move to generate new state, node
+            OthelloState newState = state.applyMoveCloning(move);
+            node = createNode(newState);
+        }
 
+        return node;
     }
 
     /*
@@ -124,9 +153,9 @@ public class OthelloMCPlayer extends OthelloPlayer {
         // Update node's average score
         List<Integer> scores = node.getScores();
         scores.add(score);
-        int total = 0;
+        Double total = 0.0;
         for (int s : scores) total += s;
-        int avg = total/scores.size();
+        Double avg = total/scores.size();
         node.setScores(scores);
         node.setAvgScore(avg);
 
