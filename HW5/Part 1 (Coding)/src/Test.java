@@ -30,6 +30,7 @@ public class Test {
         System.out.println("AB Explored: " + OthelloABPlayer.explored);
         System.out.println("Minimax Explored: " + OthelloGYPlayer.explored);
         System.out.println("Iterative deepening explored: " + OthelloIDPlayer.explored);
+        System.out.println("Monte Carlo explored nodes: " + OthelloMCPlayer.explored);
         System.out.println(state);
     }    
     

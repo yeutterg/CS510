@@ -12,7 +12,7 @@ import java.util.Random;
 public class OthelloMCPlayer extends OthelloPlayer {
 
     static int iterationsLimit;
-    static int explored; // TODO add explored states
+    static int explored;
     static List<OthelloNode> tree;
 
     /*
@@ -31,6 +31,8 @@ public class OthelloMCPlayer extends OthelloPlayer {
      */
     @Override
     public OthelloMove getMove(OthelloState state) {
+        if (state.generateMoves().isEmpty()) return null; // no possible moves
+
         OthelloNode root = createNode(state);
         tree = new ArrayList<OthelloNode>();
         tree.add(root);
@@ -57,6 +59,7 @@ public class OthelloMCPlayer extends OthelloPlayer {
                 new ArrayList<OthelloMove>(), 1, new ArrayList<Integer>(), 0.0);
         node.initScore();
         node.initChildren();
+        explored++;
         return node;
     }
 
@@ -67,6 +70,7 @@ public class OthelloMCPlayer extends OthelloPlayer {
     private static OthelloNode bestChild(OthelloNode node) {
         OthelloState state = node.getState();
         List<OthelloNode> children = node.getChildren();
+        if (children.isEmpty()) return node;
         int index = 0;
 
         // Decide if player is maximizing or minimizing
@@ -107,15 +111,8 @@ public class OthelloMCPlayer extends OthelloPlayer {
         // Check if any children not in the tree, add the first one encountered
         for (OthelloNode n : children)
             if (!tree.contains(n)) {
-                // TODO flagged bc children should have been created already
-//                OthelloState state = n.getState();
-//                OthelloNode newNode = new OthelloNode(node, state, new ArrayList<OthelloNode>(), n.getActions(), 1,
-//                        new ArrayList<Integer>(), 0.0);
-//                newNode.initScore();
-//                newNode.initChildren();
-//                tree.add(newNode);
-//                return newNode;
                 tree.add(n);
+                explored++;
                 return n;
             }
 
@@ -126,6 +123,7 @@ public class OthelloMCPlayer extends OthelloPlayer {
         float chance = r.nextFloat();
         if (chance <= 0.10f) nodeTmp = children.get(r.nextInt(children.size()));
         else nodeTmp = bestChild(node);
+        explored++;
         return treePolicy(nodeTmp);
     }
 
@@ -152,6 +150,7 @@ public class OthelloMCPlayer extends OthelloPlayer {
             node = new OthelloNode(node, newState, new ArrayList<OthelloNode>(), newMoves, 1,
                     new ArrayList<Integer>(), 0.0);
             node.initScore();
+            explored++;
             tree.add(node);
         }
 
