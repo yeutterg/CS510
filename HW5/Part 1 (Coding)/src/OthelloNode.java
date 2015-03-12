@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,10 +73,40 @@ public class OthelloNode {
         this.avgScore = avgScore;
     }
 
-    public OthelloNode(OthelloNode parent, OthelloState state, int timesVisited, List<OthelloMove> actions) {
+    /*
+     * Initialize the score for this node
+     */
+    public void initScore() {
+        int score = this.state.score();
+        this.scores.add(score);
+        this.avgScore = (double) score;
+    }
+
+    /*
+     * Initialize the children for this node
+     */
+    public void initChildren() {
+        List<OthelloMove> moves = this.state.generateMoves();
+        for (OthelloMove m : moves) {
+            OthelloState s = this.state.applyMoveCloning(m);
+            List<OthelloMove> childMove = this.getActions();
+            childMove.add(m);
+            OthelloNode c = new OthelloNode(this, s, new ArrayList<OthelloNode>(),childMove, 0,
+                    new ArrayList<Integer>(), 0.0);
+            c.initScore();
+            this.children.add(c);
+        }
+    }
+
+    public OthelloNode(OthelloNode parent, OthelloState state, List<OthelloNode> children, List<OthelloMove> actions,
+                       int timesVisited, List<Integer> scores, Double avgScore) {
         this.parent = parent;
         this.state = state;
-        this.timesVisited = timesVisited;
+        this.children = children;
         this.actions = actions;
+        this.timesVisited = timesVisited;
+        this.scores = scores;
+        this.avgScore = avgScore;
     }
+
 }

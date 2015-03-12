@@ -12,8 +12,8 @@ import java.util.Random;
 public class OthelloMCPlayer extends OthelloPlayer {
 
     static int iterationsLimit;
-    static int explored;
-    static List<OthelloNode> tree; // TODO define the actual tree
+    static int explored; // TODO add explored states
+    static List<OthelloNode> tree;
 
     /*
      * Initialize player and set the depth limit
@@ -32,11 +32,15 @@ public class OthelloMCPlayer extends OthelloPlayer {
     @Override
     public OthelloMove getMove(OthelloState state) {
         OthelloNode root = createNode(state);
+        tree = new ArrayList<OthelloNode>();
+        tree.add(root);
 
         for (int i = 0; i < iterationsLimit; i++) {
             OthelloNode node = treePolicy(root);
+            tree.add(node);
             if (node != null) {
                 OthelloNode node2 = defaultPolicy(node);
+                tree.add(node2);
                 int node2Score = score(node2);
                 backup(node, node2Score);
             }
@@ -49,7 +53,11 @@ public class OthelloMCPlayer extends OthelloPlayer {
      * Create a game tree node from the given state
      */
     private static OthelloNode createNode(OthelloState state) {
-        return new OthelloNode(null, state, 1, new ArrayList<OthelloMove>());
+        OthelloNode node = new OthelloNode(null, state, new ArrayList<OthelloNode>(),
+                new ArrayList<OthelloMove>(), 1, new ArrayList<Integer>(), 0.0);
+        node.initScore();
+        node.initChildren();
+        return node;
     }
 
     /*
@@ -98,7 +106,18 @@ public class OthelloMCPlayer extends OthelloPlayer {
 
         // Check if any children not in the tree, add the first one encountered
         for (OthelloNode n : children)
-            if (!tree.contains(n)) return new OthelloNode(node, n.getState(), 1, n.getActions());
+            if (!tree.contains(n)) {
+                // TODO flagged bc children should have been created already
+//                OthelloState state = n.getState();
+//                OthelloNode newNode = new OthelloNode(node, state, new ArrayList<OthelloNode>(), n.getActions(), 1,
+//                        new ArrayList<Integer>(), 0.0);
+//                newNode.initScore();
+//                newNode.initChildren();
+//                tree.add(newNode);
+//                return newNode;
+                tree.add(n);
+                return n;
+            }
 
         // If node not terminal but all children in tree, implement epsilon-greedy strategy
         // 10% of the time return a random child, 90% of the time return the best child
@@ -127,8 +146,13 @@ public class OthelloMCPlayer extends OthelloPlayer {
             else move = null;
 
             // apply move to generate new state, node
+            List<OthelloMove> newMoves = node.getActions();
+            newMoves.add(move);
             OthelloState newState = state.applyMoveCloning(move);
-            node = createNode(newState);
+            node = new OthelloNode(node, newState, new ArrayList<OthelloNode>(), newMoves, 1,
+                    new ArrayList<Integer>(), 0.0);
+            node.initScore();
+            tree.add(node);
         }
 
         return node;
