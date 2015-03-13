@@ -5,25 +5,44 @@ import java.util.Random;
 /**
  * CS510 Winter 2015
  * Greg Yeutter
- * OthelloMCPlayer.java: Othello player implementing the Monte Carlo tree search algorithm,
- * with specified number of iterations
+ * OthelloMCTPlayer.java: Othello player implementing the Monte Carlo tree search algorithm,
+ * with specified time limit
  */
 
-public class OthelloMCPlayer extends OthelloPlayer {
+public class OthelloMCTPlayer extends OthelloPlayer {
 
     static int iterationsLimit;
+    static long timeLimit;
+    static int iterationsIncrement;
     static int explored;
     static List<OthelloNode> tree;
 
     /*
-     * Initialize player and set the depth limit
+     * Initialize player and set the time limit with a default depth increment
      */
-    public OthelloMCPlayer(int iterations) {
-        if (iterations < 1) {
-            System.out.println("Error: Iterations limit must be >= 1.");
+    public OthelloMCTPlayer(int maxTime) {
+        iterationsIncrement = 1000;
+        if (maxTime < 1) {
+            System.out.println("Error: Time limit must be >= 1 ms.");
             System.exit(-1);
         }
-        iterationsLimit = iterations;
+        timeLimit = maxTime;
+    }
+
+    /*
+     * Initialize player and set the time limit and depth increment
+     */
+    public OthelloMCTPlayer(int maxTime, int iterationsIncrement) {
+        if (iterationsIncrement < 1) {
+            System.out.println("Error: Iteration increment must be >= 1");
+            System.exit(-1);
+        }
+        if (maxTime < 1) {
+            System.out.println("Error: Time limit must be >= 1 ms.");
+            System.exit(-1);
+        }
+        this.iterationsIncrement = iterationsIncrement;
+        timeLimit = maxTime;
     }
 
     /*
@@ -37,16 +56,24 @@ public class OthelloMCPlayer extends OthelloPlayer {
         tree = new ArrayList<OthelloNode>();
         tree.add(root);
 
-        for (int i = 0; i < iterationsLimit; i++) {
-            OthelloNode node = treePolicy(root);
-            if (node != null) {
-                OthelloNode node2 = defaultPolicy(node);
-                int node2Score = score(node2);
-                backup(node, node2Score);
-            }
-        }
+        // Expand iterations until deadline
+        long deadline = System.currentTimeMillis() + timeLimit;
+        iterationsLimit = iterationsIncrement; // start at a reasonably small iterations limit
+        OthelloMove resultingMove = null; // store the latest result
 
-        return bestChild(root).getActions().get(0);
+        while (System.currentTimeMillis() < deadline) {
+            for (int i = 0; i < iterationsLimit; i++) {
+                OthelloNode node = treePolicy(root);
+                if (node != null) {
+                    OthelloNode node2 = defaultPolicy(node);
+                    int node2Score = score(node2);
+                    backup(node, node2Score);
+                }
+            }
+            resultingMove = bestChild(root).getActions().get(0); // store the resulting move
+            iterationsLimit += iterationsIncrement; // increase the iterations limit
+        }
+        return resultingMove; // return the last move computed before the deadline
     }
 
     /*

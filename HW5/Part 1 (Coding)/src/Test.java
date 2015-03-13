@@ -10,7 +10,7 @@ public class Test {
         long startTime = System.currentTimeMillis();
         OthelloState state = new OthelloState(8);
         OthelloPlayer players[] = {new OthelloRandomPlayer(),
-                                   new OthelloMCPlayer(1000)};
+                                   new OthelloMCTPlayer(2000)};
         
         do{
             // Display the current state in the console:
