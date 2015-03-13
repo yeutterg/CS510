@@ -96,7 +96,7 @@ public class OthelloState {
      */
     public int evaluation() {
         // Set bonus value
-        int bonus = 10;
+        int bonus = 5;
 
         // Count number of pieces for each player for baseline score
         int score = score();
@@ -156,8 +156,8 @@ public class OthelloState {
         // (>0 adjacent cells empty) gets bonus
         int posFrontier = 0;
         int negFrontier = 0;
-        for(int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
+        for(int i = 1; i < boardSize-1; i++) {
+            for (int j = 1; j < boardSize-1; j++) {
                 if (board[i][j] == PLAYER1) {
                     if (board[i - 1][j - 1] == NOTHING ||
                             board[i][j - 1] == NOTHING ||

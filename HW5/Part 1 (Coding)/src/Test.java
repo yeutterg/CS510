@@ -9,8 +9,8 @@ public class Test {
         // Create the game state with the initial position for an 8x8 board:
         long startTime = System.currentTimeMillis();
         OthelloState state = new OthelloState(8);
-        OthelloPlayer players[] = {new OthelloRandomPlayer(),
-                                   new OthelloMCTPlayer(2000)};
+        OthelloPlayer players[] = {new OthelloGYPlayer(5),
+                                   new OthelloGYEPlayer(3)};
         
         do{
             // Display the current state in the console:
@@ -29,8 +29,10 @@ public class Test {
         System.out.println("\nFinal state with score: " + state.score());
         System.out.println("AB Explored: " + OthelloABPlayer.explored);
         System.out.println("Minimax Explored: " + OthelloGYPlayer.explored);
+        System.out.println("Minimax (eval) Explored: " + OthelloGYEPlayer.explored);
         System.out.println("Iterative deepening explored: " + OthelloIDPlayer.explored);
         System.out.println("Monte Carlo explored nodes: " + OthelloMCPlayer.explored);
+        System.out.println("Monte Carlo tournament explored nodes: " + OthelloMCPlayer.explored);
         System.out.println(state);
     }    
     
